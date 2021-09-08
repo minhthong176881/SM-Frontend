@@ -20,8 +20,8 @@ export class LoginGuard implements CanActivate, CanActivateChild {
     return this.canActivate(next, state);
   }
   checkLogin(url: string, state?: RouterStateSnapshot): boolean {
-    if (this.authService.accessToken?.accessToken) {
-      this.router.navigate(['/dashboard']);
+    if (this.authService.userDetail?.accessToken) {
+      this.router.navigate(['/home']);
       return false;
     }
     return true;

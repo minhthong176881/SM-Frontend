@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService, LoginData } from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
       if (result === 'success') {
         const returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigate([returnUrl]);
+        window.location.href = returnUrl;
       } else if (result === 'error') {
         this.message = 'Invalid username or password';
         this.loading = false;
@@ -62,8 +63,6 @@ export class LoginComponent implements OnInit {
       this.loading = false;
     }
     );
-
-    console.log(user);
   }
 
   confirmValidator(controlName: string, matchingControlName: string) {

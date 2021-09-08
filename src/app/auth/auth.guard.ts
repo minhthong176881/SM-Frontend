@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return this.checkLogin(url);
   }
   checkLogin(url?: string): boolean {
-    if (this.authService.accessToken?.accessToken) { return true; }
+    if (this.authService.userDetail?.accessToken) { return true; }
     this.router.navigate(['/login'], { queryParams: { returnUrl: url ? url : '' } });
     return false;
   }

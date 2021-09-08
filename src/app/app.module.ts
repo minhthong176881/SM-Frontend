@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginModule } from './login/login.module';
 import { ServicesModule } from './services/services.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './services/interceptor.service';
+import { ErrorInterceptor } from './services/error.interceptor';
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   declarations: [
@@ -16,9 +20,21 @@ import { ServicesModule } from './services/services.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     ServicesModule,
-    LoginModule
+    LoginModule,
+    HomeModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

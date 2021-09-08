@@ -10,7 +10,7 @@ export class HttpService {
   constructor(protected router: Router,
     protected http: HttpClient,
     @Inject('BASE_URL') protected baseUrl: string) { 
-      this.baseUrl = "https://localhost:11000/api/v1/"
+      this.baseUrl = "http://localhost:11000/api/v1/"
     }
 
   public get<T>(url: string, options?: object): Promise<T> {

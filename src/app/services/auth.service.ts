@@ -1,25 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, observable, Observable } from 'rxjs';
 import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private _accessToken: string;
-  get accessToken(): LoginResponse {
-    return { accessToken: this._accessToken };
+  private _userDetails: BehaviorSubject<LoginResponse>;
+  private _currentUser: Observable<LoginResponse>;
+  get userDetail(): LoginResponse {
+    return this._userDetails.value;
+  }
+  get currentUser(): Observable<LoginResponse> {
+    return this._currentUser;
   }
   constructor(private httpService: HttpService) {
-    this._accessToken = localStorage.getItem('accessToken') || '';
+    this._userDetails = new BehaviorSubject<LoginResponse>(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+    this._currentUser = this._userDetails.asObservable();
   }
 
   login(data: LoginData): Observable<string> {
     return new Observable<string>(observer => {
       this.httpService.post<LoginResponse>('users/login', data).then(res => {
         if (res.accessToken !== '') {
-          this._accessToken = res.accessToken;
-          localStorage.setItem('accessToken', res.accessToken);
+          var details = { username: data.username, accessToken: res.accessToken };
+          this._userDetails = new BehaviorSubject<LoginResponse>(details);
+          localStorage.setItem('currentUser', JSON.stringify(details));
           observer.next('success');
         } else {
           observer.next('error');
@@ -28,9 +34,18 @@ export class AuthService {
     });
   }
 
-  logout() {
-    localStorage.removeItem('accessToken');
-    this._accessToken = '';
+  logout(): Observable<boolean> {
+    return new Observable<boolean>(resolve => {
+      this.httpService.get<LogoutResponse>('users/logout').then(res => {
+        if (res.loggedOut) {
+          localStorage.removeItem('currentUser');
+          this._userDetails.next(null as any);
+          resolve.next(true);
+        } else {
+          resolve.next(false);
+        }
+      })
+    });
   }
 }
 
@@ -46,5 +61,10 @@ export interface LoginData {
 }
 
 export interface LoginResponse {
+  username: string,
   accessToken: string,
+}
+
+export interface LogoutResponse {
+  loggedOut: boolean;
 }
