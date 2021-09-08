@@ -1,0 +1,32 @@
+.container {
+    /* background-color: #eb1c2e; */
+    width: 350px;
+    padding: 15px;
+    border-radius: 8px;
+    display: flow-root;
+    border: 1px solid #c2c2c2;
+    box-shadow: 5px 5px 5px #c2c2c2;
+    text-align: center;
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-btn {
+    height: 50px;
+    width: 100%;
+    margin: auto;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #1878f3;
+    color: #fff;
+}
+
+.register-btn {
+    height: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #42b72a;
+    color: white;
+}
