@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="form" (ngSubmit)="login(form.controls.username.value, form.controls.password.value)">
         <mat-form-field class="" appearance="fill" style="width: 100%;">
             <mat-label>Username</mat-label>
             <input type="text" matInput formControlName="username" placeholder="Username">
@@ -38,7 +38,7 @@
         <ng-template #register><button mat-raised-button type="submit" color="primary" class="login-btn" style="margin-top: 20px; margin-bottom: 20px;">Register</button></ng-template>
         <a href="/reset" style="text-decoration: none; color: #1878f3;">Forget password?</a>
         <hr style="margin-top: 20px; color: #c2c2c2;">
-        <button *ngIf="!isRegister; else login" mat-raised-button class="register-btn" style="margin-top: 20px;" (click)="change()">Register</button>
-        <ng-template #login><button mat-raised-button class="register-btn" style="margin-top: 20px" (click)="change()">Login</button></ng-template>
+        <button *ngIf="!isRegister; else something" mat-raised-button class="register-btn" style="margin-top: 20px;" (click)="change()">Register</button>
+        <ng-template #something><button mat-raised-button class="register-btn" style="margin-top: 20px" (click)="change()">Login</button></ng-template>
     </form>
 </div>

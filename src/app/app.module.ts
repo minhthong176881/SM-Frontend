@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginModule } from './login/login.module';
+import { ServicesModule } from './services/services.module';
 
 @NgModule({
   declarations: [
@@ -15,9 +15,10 @@ import { LoginModule } from './login/login.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ServicesModule,
     LoginModule
   ],
   providers: [],
-  bootstrap: [AppComponent, LoginComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService, LoginData } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -10,9 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
-  protected form: FormGroup = new FormGroup({})
-  protected isRegister: boolean = false;
-  protected isLogin: boolean = true;
+  public form: FormGroup = new FormGroup({})
+  public isRegister: boolean = false;
+  public isLogin: boolean = true;
   protected message: string = '';
   protected loading: boolean = false;
   constructor(private fb: FormBuilder,
@@ -41,13 +41,13 @@ export class LoginComponent implements OnInit {
     this.isLogin = !this.isLogin;
   }
 
-  submit() {
-    console.log(this.form.value);
-  }
-
-  login(user: User) {
+  login(username: string, password: string) {
     this.message = '';
     this.loading = true;
+    var user = {
+      username: username,
+      password: password,
+    }
     this.authService.login(user).subscribe(result => {
       if (result === 'success') {
         const returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
@@ -62,6 +62,8 @@ export class LoginComponent implements OnInit {
       this.loading = false;
     }
     );
+
+    console.log(user);
   }
 
   confirmValidator(controlName: string, matchingControlName: string) {
@@ -80,7 +82,3 @@ export class LoginComponent implements OnInit {
   }
 }
 
-export interface User {
-  username: string;
-  password: string;
-}

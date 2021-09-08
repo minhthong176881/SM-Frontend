@@ -6,16 +6,19 @@ import { HttpService } from './http.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private accessToken: string;
+  private _accessToken: string;
+  get accessToken(): LoginResponse {
+    return { accessToken: this._accessToken };
+  }
   constructor(private httpService: HttpService) {
-    this.accessToken = localStorage.getItem('accessToken') || '';
+    this._accessToken = localStorage.getItem('accessToken') || '';
   }
 
   login(data: LoginData): Observable<string> {
     return new Observable<string>(observer => {
-      this.httpService.post<LoginResponse>('/login', data).then(res => {
+      this.httpService.post<LoginResponse>('users/login', data).then(res => {
         if (res.accessToken !== '') {
-          this.accessToken = res.accessToken;
+          this._accessToken = res.accessToken;
           localStorage.setItem('accessToken', res.accessToken);
           observer.next('success');
         } else {
@@ -27,7 +30,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('accessToken');
-    this.accessToken = '';
+    this._accessToken = '';
   }
 }
 
