@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
@@ -9,7 +8,12 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class TopbarComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  @Input() user!: string;
+  @Output() showFiller = new EventEmitter();
+  constructor(private authService: AuthService, 
+    private router: Router, 
+    private activatedRoute: ActivatedRoute,
+    ) { }
 
   ngOnInit(): void {
   }

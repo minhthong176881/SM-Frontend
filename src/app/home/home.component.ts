@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TopbarComponent } from './topbar/topbar.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -7,10 +7,24 @@ import { TopbarComponent } from './topbar/topbar.component';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  constructor() { }
+  private _currentUser: string;
+  get currentUser() {
+    return this._currentUser;
+  }
+  private _showFiller = false;
+  get showFiller() {
+    return this._showFiller;
+  }
+  constructor(private authService: AuthService) { 
+    this._currentUser = this.authService.userDetail.username;
+  }
 
   ngOnInit(): void {
+
+  }
+
+  onShowFiller() {
+    this._showFiller = !this._showFiller;
   }
 
 }
