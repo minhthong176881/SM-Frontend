@@ -49,11 +49,11 @@ export class LoginComponent implements OnInit {
       password: password,
     }
     this.authService.login(user).subscribe(result => {
-      if (result === 'success') {
+      if (result === 'SUCCESS') {
         const returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigate([returnUrl]);
         window.location.href = returnUrl;
-      } else if (result === 'error') {
+      } else if (result === 'ERROR_NAME_OR_PASS') {
         this.message = 'Invalid username or password';
         this.loading = false;
         alert('Error');

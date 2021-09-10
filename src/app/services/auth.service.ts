@@ -19,32 +19,43 @@ export class AuthService {
     this._currentUser = this._userDetails.asObservable();
   }
 
-  login(data: LoginData): Observable<string> {
-    return new Observable<string>(observer => {
-      this.httpService.post<LoginResponse>('users/login', data).then(res => {
-        if (res.accessToken !== '') {
-          var details = { username: data.username, accessToken: res.accessToken };
-          this._userDetails = new BehaviorSubject<LoginResponse>(details);
-          localStorage.setItem('currentUser', JSON.stringify(details));
-          observer.next('success');
-        } else {
-          observer.next('error');
-        }
-      });
+  login(data: LoginData) {
+    return new Observable<string>((observer) => {
+      this.httpService.post<LoginResponse>('users/login', data)
+        .subscribe((detail: LoginResponse) => {
+          if (detail?.accessToken === '') {
+            observer.next('ERROR_NAME_OR_PASS');
+          } else {
+            var currentUser = {
+              accessToken: detail.accessToken,
+              username: data.username
+            }
+            this._userDetails = new BehaviorSubject<LoginResponse>(currentUser);
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            this._userDetails.next(detail);
+            observer.next('SUCCESS');
+          }
+        },
+          (message) => {
+            observer.error(message);
+          });
+      return { unsubscribe() { } };
     });
   }
 
-  logout(): Observable<boolean> {
-    return new Observable<boolean>(resolve => {
-      this.httpService.get<LogoutResponse>('users/logout').then(res => {
-        if (res.loggedOut) {
-          localStorage.removeItem('currentUser');
-          this._userDetails.next(null as any);
-          resolve.next(true);
-        } else {
-          resolve.next(false);
-        }
-      })
+  logout() {
+    return new Observable<boolean>((observer) => {
+      this.httpService.get<LogoutResponse>('users/logout')
+        .subscribe((detail: LogoutResponse) => {
+          if (!(detail?.loggedOut)) {
+            localStorage.removeItem('currentUser');
+            this._userDetails.next(null as any);
+            observer.next(true);
+          } else {
+            observer.next(false);
+          }
+        });
+      return { unsubscribe() { } };
     });
   }
 }

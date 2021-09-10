@@ -16,6 +16,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { DialogComponent } from './dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -24,7 +27,8 @@ import { MatTableModule } from '@angular/material/table';
     HomeComponent,
     TopbarComponent,
     SidebarComponent,
-    ContentComponent
+    ContentComponent,
+    DialogComponent
   ],
   imports: [
     CommonModule,
@@ -41,6 +45,8 @@ import { MatTableModule } from '@angular/material/table';
     MatButtonModule,
     MatPaginatorModule,
     MatTableModule,
+    MatDialogModule,
+    MatSelectModule
   ],
 })
 export class HomeModule { }
