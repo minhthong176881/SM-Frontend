@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,7 +11,7 @@ import { DialogComponent } from '../dialog/dialog.component';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent implements AfterViewInit {
+export class ContentComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['ip', 'port', 'username', 'password', 'validate', 'status', 'options'];
   dataSource!: MatTableDataSource<Server>;
@@ -19,7 +19,9 @@ export class ContentComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private serverService: ServerService, public dialog: MatDialog) {
+  constructor(private serverService: ServerService, public dialog: MatDialog) {}
+
+  ngOnInit() {
     this.getServer();
   }
 

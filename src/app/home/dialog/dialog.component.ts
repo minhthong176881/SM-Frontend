@@ -25,6 +25,10 @@ export class DialogComponent implements OnInit {
     return this.form.controls;
   }
 
+  addServer() {
+    console.log(this.form.value);
+  }
+
 }
 
 export interface DialogData {
