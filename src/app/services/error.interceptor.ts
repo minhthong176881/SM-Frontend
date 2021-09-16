@@ -25,7 +25,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           // auto logout if 401 response returned from api
           localStorage.removeItem('currentUser');
-          this.router.navigate(['/home']);
+          this.router.navigate(['/login']);
         }
       }
         // return an observable with a user-facing error message

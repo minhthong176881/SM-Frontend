@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -13,12 +14,25 @@ export class ServerService {
 
   constructor(private httpService: HttpService) { }
   
-  getServers(){
-    return this.httpService.get<ServerResponse>('servers');
+  getServers(pageIndex: number, pageOffset: number, query: string) {
+    const param = 'pageIndex=' + pageIndex + '&pageOffset=' + pageOffset + '&query=' + query;
+    return this.httpService.get<ServerResponse>('servers?' + param)
   }
 
   export() {
     return this.httpService.get<ExportResponse>('servers/export');
+  }
+
+  check(id: string) {
+    return this.httpService.get<ServerCheckResponse>(`servers/${id}/check`)
+  }
+
+  validate(id: string) {
+    return this.httpService.get<ServerValidateResponse>(`servers/${id}/validate`)
+  }
+
+  log(id: string, start: string, end: string, date: string, month: string) {
+    return this.httpService.get<ServerLogResponse>(`servers/${id}/log?start=${start}&end=${end}&date=${date}&month=${month}`)
   }
 
 }
@@ -41,4 +55,28 @@ export interface ServerResponse {
 
 export interface ExportResponse {
   downloadUrl: string
+}
+
+export interface ServerCheckResponse {
+  status: boolean;
+}
+
+export interface ServerValidateResponse {
+  validated: boolean;
+}
+
+export interface ServerLogResponse {
+  logs: [
+    {
+      time: string,
+      status: string,
+    }
+  ],
+  changeLogs: [
+    {
+      start: string,
+      end: string,
+      total: string,
+    }
+  ]
 }

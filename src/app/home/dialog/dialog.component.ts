@@ -32,7 +32,6 @@ export class DialogComponent implements OnInit {
 }
 
 export interface DialogData {
-  animal: 'panda' | 'unicorn' | 'lion';
   mode: string;
   server: Server
 }

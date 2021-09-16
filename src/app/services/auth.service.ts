@@ -47,7 +47,8 @@ export class AuthService {
     return new Observable<boolean>((observer) => {
       this.httpService.get<LogoutResponse>('users/logout')
         .subscribe((detail: LogoutResponse) => {
-          if (!(detail?.loggedOut)) {
+          console.log(detail);
+          if (detail?.loggedOut) {
             localStorage.removeItem('currentUser');
             this._userDetails.next(null as any);
             observer.next(true);
