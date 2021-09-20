@@ -1,17 +1,15 @@
-<!-- <mat-drawer-container class="container" autosize>
-    <app-topbar [user]="currentUser" (showFiller)="onShowFiller()"></app-topbar>
-    <app-sidebar [showFiller]="showFiller"></app-sidebar>
-</mat-drawer-container> -->
-<header>
-    <app-topbar [user]="currentUser" (showFiller)="onShowFiller()"></app-topbar>
+<!-- <header>
+    <app-topbar [user]="currentUser"></app-topbar>
 </header>
 
 <section>
     <nav>
         <app-sidebar></app-sidebar>
     </nav>
-
     <article>
         <app-content></app-content>
     </article>
-</section>
+</section> -->
+<div class="container">
+    <app-topbar [user]="currentUser"></app-topbar>
+</div>

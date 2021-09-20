@@ -1,5 +1,11 @@
-.topbar {
+.topbar{
     display: flex;
     background-color: #eb1c2e;
     color: white;
+    position: fixed;
+    z-index: 2;
+}
+
+.sidenav-container {
+    flex: 1 0 auto;
 }

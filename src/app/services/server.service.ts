@@ -19,6 +19,30 @@ export class ServerService {
     return this.httpService.get<ServerResponse>('servers?' + param)
   }
 
+  getServerById(id: string) {
+    return this.httpService.get<Server>('servers/' + id)
+  }
+
+  add(server: Server) {
+    const requestBody = {
+      server: server
+    }
+    return this.httpService.post<Server>('servers', requestBody)
+  }
+
+  update(id: string, server: Server) {
+    server.id = id;
+    const requestBody = {
+      id: id,
+      server: server
+    }
+    return this.httpService.put<Server>('servers/' + id, requestBody)
+  }
+
+  delete(id: string) {
+    return this.httpService.delete<DeleteServerResponse>('servers/' + id)
+  }
+
   export() {
     return this.httpService.get<ExportResponse>('servers/export');
   }
@@ -51,6 +75,10 @@ export interface Server {
 export interface ServerResponse {
   servers: Server[];
   total: number;
+}
+
+export interface DeleteServerResponse {
+  deleted: string
 }
 
 export interface ExportResponse {

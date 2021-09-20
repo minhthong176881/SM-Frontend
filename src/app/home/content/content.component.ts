@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse } from 'src/app/services/server.service';
+import { merge, of as observableOf } from 'rxjs';
+import { switchMap, startWith, map, catchError } from 'rxjs/operators';
+import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse, DeleteServerResponse } from 'src/app/services/server.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -18,11 +20,12 @@ export class ContentComponent implements OnInit, AfterViewInit {
   total: number = 0;
   pageSize: number = 5;
   pageIndex: number = 1;
+  pageEvent!: PageEvent;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private serverService: ServerService, public dialog: MatDialog) {}
+  constructor(private serverService: ServerService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getServer(1, 5, '');
@@ -33,11 +36,6 @@ export class ContentComponent implements OnInit, AfterViewInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
     this.getServer(1, 5, filterValue.trim().toLowerCase());
   }
 
@@ -47,6 +45,8 @@ export class ContentComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource(result.servers);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.pageIndex = pageIndex - 1;
+      this.pageSize = pageOffset;
     });
   }
 
@@ -78,11 +78,29 @@ export class ContentComponent implements OnInit, AfterViewInit {
     })
   }
 
-  openDialog() {
+  openDialog(data: Server | null, mode: string) {
     this.dialog.open(DialogComponent, {
       data: {
-        animal: 'panda',
+        mode: mode,
+        server: data
       }
     });
+  }
+
+  edit(id: string) {
+    this.serverService.getServerById(id).subscribe((result: Server) => {
+      this.openDialog(result, 'edit');
+    });
+  }
+
+  delete(id: string) {
+    this.serverService.getServerById(id).subscribe((result: Server) => {
+      this.openDialog(result, 'delete');
+    });
+  }
+
+  handlePage(event: PageEvent, filterValue: string): PageEvent {
+    this.getServer(event.pageIndex + 1, event.pageSize, filterValue.trim().toLowerCase());
+    return event;
   }
 }

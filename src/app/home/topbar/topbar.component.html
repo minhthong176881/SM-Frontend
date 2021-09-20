@@ -1,17 +1,28 @@
 <mat-toolbar color="primary" class="topbar">
-    <button mat-icon-button style="background-color: #eb1c2e; color: white; border: none" (click)="showFiller.emit()">
-      <mat-icon>menu</mat-icon>
+  <button mat-icon-button style="background-color: #eb1c2e; color: white; border: none" (click)="snav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="example-spacer"></span>
+  <span style="margin-left: 15px;">Server Management</span>
+  <button style="margin-left: auto; margin-right: 40px; background-color: #eb1c2e; color: white; border: none"
+    mat-icon-button [matMenuTriggerFor]="menu">
+    <span *ngIf="user" style="font-size: 15px; margin-right: 5px;">{{user}}</span>
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="logout()">
+      <mat-icon> directions_run</mat-icon>
+      <span>Logout</span>
     </button>
-    <span class="example-spacer"></span>
-    <span style="margin-left: 15px;">Server Management</span>
-    <button style="margin-left: auto; margin-right: 40px; background-color: #eb1c2e; color: white; border: none" mat-icon-button [matMenuTriggerFor]="menu">
-      <span *ngIf="user" style="font-size: 15px; margin-right: 5px;">{{user}}</span>
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="logout()">
-          <mat-icon> directions_run</mat-icon>
-          <span>Logout</span>
-        </button>
-    </mat-menu>
+  </mat-menu>
 </mat-toolbar>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #snav [mode]="'side'" style="margin-top: 56px;">
+    <mat-nav-list>
+      <a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-content></app-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

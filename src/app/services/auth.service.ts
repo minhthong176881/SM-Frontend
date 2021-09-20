@@ -1,3 +1,4 @@
+import { ObserversModule } from '@angular/cdk/observers';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, observable, Observable } from 'rxjs';
 import { HttpService } from './http.service';
@@ -19,7 +20,24 @@ export class AuthService {
     this._currentUser = this._userDetails.asObservable();
   }
 
-  login(data: LoginData) {
+  register(data: RegisterRequest) {
+    return new Observable<string>((observer) => {
+      this.httpService.post<User>('users/register', data)
+        .subscribe((response: User) => {
+          if (response !== null) {
+            observer.next('SUCCESS');
+          } else {
+            observer.next('FAIL');
+          }
+        },
+          (message) => {
+            observer.error(message);
+          });
+      return { unsubscribe() { } };
+    });
+  }
+
+  login(data: LoginRequest) {
     return new Observable<string>((observer) => {
       this.httpService.post<LoginResponse>('users/login', data)
         .subscribe((detail: LoginResponse) => {
@@ -61,13 +79,19 @@ export class AuthService {
   }
 }
 
-export enum UserRoles {
-  UNAUTHENTICATED = 0,
-  ADMIN = 1,
-  USER = 2,
+export interface User {
+  id: string, 
+  username: string,
+  password: string,
+  email: string,
+  role: string,
 }
 
-export interface LoginData {
+export interface RegisterRequest {
+  user: User
+}
+
+export interface LoginRequest {
   username: string,
   password: string,
 }

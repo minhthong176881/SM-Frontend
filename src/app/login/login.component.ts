@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService, User } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -39,6 +39,33 @@ export class LoginComponent implements OnInit {
   change() {
     this.isRegister = !this.isRegister;
     this.isLogin = !this.isLogin;
+  }
+
+  register(username: string, password: string, email: string) {
+    var user = {
+      user: {
+        id: "",
+        username: username,
+        password: password,
+        email: email,
+        role: "",
+      }
+    }
+    this.authService.register(user).subscribe(result => {
+      if (result === 'SUCCESS') {
+        alert('Registered successfully!');
+        const returnUrl: string = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/login';
+        this.router.navigate([returnUrl]);
+        window.location.href = returnUrl;
+      } else {
+        this.message = 'Fail to register new user!';
+        alert('Error');
+      }
+    }, (message) => {
+      this.message = message;
+      this.loading = false;
+    }
+    );
   }
 
   login(username: string, password: string) {

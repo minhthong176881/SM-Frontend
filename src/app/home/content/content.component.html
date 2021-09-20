@@ -1,16 +1,16 @@
-<div style="display: flex;">
+<div class="content">
     <mat-form-field style="width: 300px;" appearance="standard">
         <mat-label>Search</mat-label>
         <mat-icon matPrefix>search</mat-icon>
         <input matInput type="search" (keyup)="applyFilter($event)" placeholder="Search here" class="search-input"
             #input>
     </mat-form-field>
-    <button style="height: 75%; margin-top: 10px; margin-left: 15px" (click)="getServer(1, 5, '')" mat-raised-button
+    <button style="height: 75%; margin-top: 10px; margin-left: 15px" (click)="getServer(1, 5, ''); input.value = ''" mat-raised-button
         color="primary">
         <mat-icon>refresh</mat-icon>
     </button>
     <div style="margin-left: auto; margin-top: 10px;">
-        <button style="margin-right: 10px" mat-raised-button color="primary" (click)="openDialog()">
+        <button style="margin-right: 10px" mat-raised-button color="primary" (click)="openDialog(null, 'add')">
             Add Server
             <mat-icon style="margin-left: 5px; margin-bottom: 5px;">add_box</mat-icon>
         </button>
@@ -19,13 +19,8 @@
         </button>
     </div>
 </div>
-<div class="data" style="margin-top: 20px;">
-    <!-- <mat-form-field appearance="standard">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. localhost" #input>
-    </mat-form-field> -->
-
-    <div class="mat-elevation-z8">
+<div class="data">
+    <div class="mat-elevation-z8" style="overflow: auto">
         <table mat-table [dataSource]="dataSource" matSort>
 
             <!-- IP Column -->
@@ -87,11 +82,11 @@
                             <mat-icon>assessment</mat-icon>
                             <span>Log</span>
                         </button>
-                        <button mat-menu-item>
+                        <button mat-menu-item (click)="edit(row.id)">
                             <mat-icon>edit</mat-icon>
                             <span>Edit</span>
                         </button>
-                        <button mat-menu-item>
+                        <button mat-menu-item (click)="delete(row.id)">
                             <mat-icon>delete</mat-icon>
                             <span>Delete</span>
                         </button>
@@ -99,16 +94,16 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             <!-- Row shown when there is no matching data. -->
-            <!-- <tr class="mat-row" *matNoDataRow>
+            <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-            </tr> -->
+            </tr>
         </table>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of servers" [pageSize]="pageSize"
-            [pageIndex]="pageIndex" [length]="total"></mat-paginator>
+        <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of servers" [pageSize]="pageSize"
+            [pageIndex]="pageIndex" [length]="total" (page)="pageEvent = handlePage($event, input.value)"></mat-paginator>
     </div>
 </div>

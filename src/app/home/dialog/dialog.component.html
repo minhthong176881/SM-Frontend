@@ -1,6 +1,8 @@
-<h2 mat-dialog-title>Add new server</h2>
+<h2 *ngIf="mode == 'add'" mat-dialog-title>Add new server</h2>
+<h2 *ngIf="mode == 'edit'" mat-dialog-title>Edit server</h2>
+<h2 *ngIf="mode == 'delete'" mat-dialog-title>Delete server</h2>
 <mat-dialog-content class="mat-typography">
-    <div class="dialog-container">
+    <div class="dialog-container" *ngIf="mode != 'delete'">
         <form [formGroup]="form">
             <p>
                 <mat-form-field appearance="fill">
@@ -39,13 +41,18 @@
             <p>
                 <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Description</mat-label>
-                    <textarea matInput></textarea>
+                    <textarea matInput #input formControlName="description"></textarea>
                 </mat-form-field>
             </p>
         </form>
     </div>
+    <div class="dialog-container" *ngIf="mode == 'delete'">
+        <p>Are you sure you want to delete this server {{currentServer.ip}}?</p>
+    </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="addServer()">Add</button>
+    <button *ngIf="mode == 'add'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="addServer()">Add</button>
+    <button *ngIf="mode == 'edit'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="updateServer()">Update</button>
+    <button *ngIf="mode == 'delete'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="deleteServer()">Delete</button>
 </mat-dialog-actions>

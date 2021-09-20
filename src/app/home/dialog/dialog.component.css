@@ -1,3 +1,19 @@
 .dialog-container .mat-form-field + .mat-form-field {
     margin-left: 8px;
-  }
+}
+
+::ng-deep snack-bar-container.success {
+  background: white;
+}
+
+::ng-deep snack-bar-container.fail {
+  background: white;
+}
+
+::ng-deep .success .mat-simple-snackbar {
+  color: green;
+}
+
+::ng-deep .fail .mat-simple-snackbar {
+  color: red;
+}

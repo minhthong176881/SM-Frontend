@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="form" (ngSubmit)="login(form.controls.username.value, form.controls.password.value)">
+    <form [formGroup]="form">
         <mat-form-field class="" appearance="fill" style="width: 100%;">
             <mat-label>Username</mat-label>
             <input type="text" matInput formControlName="username" placeholder="Username">
@@ -34,8 +34,8 @@
                 Password and Confirm password must be <strong>match</strong>
             </mat-error>
         </mat-form-field>
-        <button *ngIf="!isRegister; else register" type="submit" mat-raised-button color="primary" class="login-btn" style="margin-top: 20px; margin-bottom: 20px;">Login</button>
-        <ng-template #register><button mat-raised-button type="submit" color="primary" class="login-btn" style="margin-top: 20px; margin-bottom: 20px;">Register</button></ng-template>
+        <button *ngIf="!isRegister" type="submit" mat-raised-button color="primary" class="login-btn" style="margin-top: 20px; margin-bottom: 20px;" (click)="login(form.controls.username.value, form.controls.password.value)">Login</button>
+        <button *ngIf="isRegister" mat-raised-button type="submit" color="primary" class="login-btn" style="margin-top: 20px; margin-bottom: 20px;" (click)="register(form.controls.username.value, form.controls.password.value, form.controls.email.value)">Register</button>
         <a href="/reset" style="text-decoration: none; color: #1878f3;">Forget password?</a>
         <hr style="margin-top: 20px; color: #c2c2c2;">
         <button *ngIf="!isRegister; else something" mat-raised-button class="register-btn" style="margin-top: 20px;" (click)="change()">Register</button>

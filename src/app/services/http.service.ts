@@ -23,8 +23,7 @@ export class HttpService {
   public put<T>(url: string, body: object, options?: object): Observable<T> {
     return this.http.put<T>(this.baseUrl + url, body, options);
   }
-  public delete<T>(url: string, id: string, options?: object): Observable<T> {
-    const route = `${url}/${id}`;
-    return this.http.delete<T>(this.baseUrl + route, options);
+  public delete<T>(url: string, options?: object): Observable<T> {
+    return this.http.delete<T>(this.baseUrl + url, options);
   }
 }

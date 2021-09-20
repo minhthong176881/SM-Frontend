@@ -11,10 +11,7 @@ export class HomeComponent implements OnInit {
   get currentUser() {
     return this._currentUser;
   }
-  private _showFiller = false;
-  get showFiller() {
-    return this._showFiller;
-  }
+
   constructor(private authService: AuthService) { 
     this._currentUser = this.authService.userDetail.username;
   }
@@ -22,9 +19,4 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
-  onShowFiller() {
-    this._showFiller = !this._showFiller;
-  }
-
 }
