@@ -3,8 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { merge, of as observableOf } from 'rxjs';
-import { switchMap, startWith, map, catchError } from 'rxjs/operators';
 import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse, DeleteServerResponse } from 'src/app/services/server.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
@@ -21,6 +19,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   pageSize: number = 5;
   pageIndex: number = 1;
   pageEvent!: PageEvent;
+  isLoading = true;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,13 +39,13 @@ export class ContentComponent implements OnInit, AfterViewInit {
   }
 
   getServer(pageIndex: number, pageOffset: number, query: string) {
+    this.isLoading = true;
     this.serverService.getServers(pageIndex, pageOffset, query).subscribe((result: ServerResponse) => {
       this.total = result.total;
       this.dataSource = new MatTableDataSource(result.servers);
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.pageIndex = pageIndex - 1;
-      this.pageSize = pageOffset;
+      this.dataSource.sort = this.sort;;
+      this.isLoading = false;
     });
   }
 

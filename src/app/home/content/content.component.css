@@ -7,6 +7,19 @@ table {
     width: 100%;
 }
 
+.loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 td,
 th {
     width: 15%;
@@ -22,10 +35,10 @@ th {
     margin-top: 20px;
     margin-left: 24px;
     margin-right: 24px;
+    height: 79vh;
 }
 
 .paginator {
     bottom: 0;
     position: sticky;
-    
 }

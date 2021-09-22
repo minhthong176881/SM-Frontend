@@ -22,7 +22,7 @@ export class DialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      ip: ['', Validators.required],
+      ip: ['', [Validators.required, Validators.pattern('\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b')]],
       port: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -37,11 +37,6 @@ export class DialogComponent implements OnInit {
         password: this.currentServer.password,
         description: this.currentServer.description,
       });
-      // this.form.get('ip')?.setValue(this.currentServer.ip);
-      // this.form.get('port')?.setValue(this.currentServer.port);
-      // this.form.get('username')?.setValue(this.currentServer.username);
-      // this.form.get('password')?.setValue(this.currentServer.password);
-      // this.form.get('description')?.setValue(this.currentServer.description);
     }
   }
 
@@ -61,14 +56,19 @@ export class DialogComponent implements OnInit {
   addServer() {
     this.serverService.add(this.form.value).subscribe(
       (result: Server) => {
-        this.openSnackBar('Add server successfully!', "", 'success')
+        if (result != null)
+          this.openSnackBar('Add server successfully!', "", 'success')
+        else this.openSnackBar('Fail to add server!', "", 'fail')
       });
+      window.location.reload();
   }
 
   updateServer() {
     this.serverService.update(this.currentServer.id, this.form.value).subscribe(
       (result: Server) => {
-        this.openSnackBar('Update server successfully!', "", 'success')
+        if (result != null)
+          this.openSnackBar('Update server successfully!', "", 'success')
+        else this.openSnackBar('Fail to update server!', "", 'fail')
       });
   }
 
@@ -77,8 +77,9 @@ export class DialogComponent implements OnInit {
       (result: DeleteServerResponse) => {
         if (result.deleted)
           this.openSnackBar('Delete server successfully!', "", 'success')
-        else this.openSnackBar('Delete server fail!', "", 'fail')
+        else this.openSnackBar('Fail to delete server!', "", 'fail')
       });
+    window.location.reload();
   }
 
 }

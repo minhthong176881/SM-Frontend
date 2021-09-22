@@ -7,15 +7,18 @@
             <p>
                 <mat-form-field appearance="fill">
                     <mat-label>IP address</mat-label>
-                    <input matInput #input formControlName="ip" maxlength="10" placeholder="Ex. 192.168.56.10">
+                    <input matInput #input formControlName="ip" placeholder="Ex. 192.168.56.10">
                     <mat-error *ngIf="f.ip.hasError('required')">
                         IP address is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="f.ip.hasError('pattern')">
+                        IP address is not <strong>ipv4</strong> format
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field style="margin-left: 15px;" appearance="fill">
                     <mat-label>Port number</mat-label>
-                    <input matInput #input formControlName="port" maxlength="10" placeholder="Ex. 22">
+                    <input matInput #input formControlName="port" placeholder="Ex. 22">
                     <mat-error *ngIf="f.port.hasError('required')">
                         Port number is <strong>required</strong>
                     </mat-error>
@@ -24,7 +27,7 @@
             <p>
                 <mat-form-field appearance="fill">
                     <mat-label>Username</mat-label>
-                    <input matInput #input formControlName="username" maxlength="10" placeholder="Ex. root">
+                    <input matInput #input formControlName="username" placeholder="Ex. root">
                     <mat-error *ngIf="f.username.hasError('required')">
                         Username is <strong>required</strong>
                     </mat-error>
@@ -32,7 +35,7 @@
 
                 <mat-form-field style="margin-left: 15px;" appearance="fill">
                     <mat-label>Password</mat-label>
-                    <input matInput #input formControlName="password" maxlength="10" placeholder="Ex. 123abc">
+                    <input matInput #input formControlName="password" placeholder="Ex. 123abc">
                     <mat-error *ngIf="f.password.hasError('required')">
                         Password is <strong>required</strong>
                     </mat-error>
@@ -52,7 +55,13 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button *ngIf="mode == 'add'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="addServer()">Add</button>
-    <button *ngIf="mode == 'edit'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="updateServer()">Update</button>
+    <button *ngIf="mode == 'add'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial 
+        (click)="addServer()"
+        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == ''"
+    >Add</button>
+    <button *ngIf="mode == 'edit'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial 
+        (click)="updateServer()"
+        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == ''"
+    >Update</button>
     <button *ngIf="mode == 'delete'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="deleteServer()">Delete</button>
 </mat-dialog-actions>
