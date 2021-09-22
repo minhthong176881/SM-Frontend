@@ -5,12 +5,12 @@
         <input matInput type="search" (keyup)="applyFilter($event)" placeholder="Search here" class="search-input"
             #input>
     </mat-form-field>
-    <button style="height: 75%; margin-top: 10px; margin-left: 15px" (click)="getServer(1, pageSize, ''); input.value = ''" mat-raised-button
-        color="primary">
+    <button style="height: 75%; margin-top: 10px; margin-left: 15px"
+        (click)="getServer(1, pageSize, ''); input.value = ''" mat-raised-button color="primary">
         <mat-icon>refresh</mat-icon>
     </button>
     <div style="margin-left: auto; margin-top: 10px;">
-        <button style="margin-right: 10px" mat-raised-button color="primary" (click)="openDialog(null, 'add')">
+        <button style="margin-right: 10px" mat-raised-button color="primary" (click)="openModifyDialog(null, 'add')">
             Add Server
             <mat-icon style="margin-left: 5px; margin-bottom: 5px;">add_box</mat-icon>
         </button>
@@ -25,6 +25,12 @@
             <mat-spinner *ngIf="isLoading"></mat-spinner>
         </div> -->
         <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Server Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Server name </th>
+                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+            </ng-container>
 
             <!-- IP Column -->
             <ng-container matColumnDef="ip">
@@ -65,35 +71,35 @@
             <ng-container matColumnDef="options">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Options </th>
                 <td mat-cell *matCellDef="let row">
-                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item>
-                            <mat-icon>link</mat-icon>
-                            <span>Connect</span>
-                        </button>
-                        <button mat-menu-item (click)="check(row.id)">
-                            <mat-icon>check</mat-icon>
-                            <span>Check</span>
-                        </button>
-                        <button mat-menu-item (click)="validate(row.id)">
-                            <mat-icon>done_all</mat-icon>
-                            <span>Validate password</span>
-                        </button>
-                        <button mat-menu-item (click)="log(row.id, '', '', '', '')">
-                            <mat-icon>assessment</mat-icon>
-                            <span>Log</span>
-                        </button>
-                        <button mat-menu-item (click)="edit(row.id)">
+                    <div style="display: flex;">
+                        <button (click)="edit(row.id)" class="option-btn" style="color: green;">
                             <mat-icon>edit</mat-icon>
-                            <span>Edit</span>
                         </button>
-                        <button mat-menu-item (click)="delete(row.id)">
+                        <button (click)="delete(row.id)" class="option-btn" style="color: red">
                             <mat-icon>delete</mat-icon>
-                            <span>Delete</span>
                         </button>
-                    </mat-menu>
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>
+                                <mat-icon>link</mat-icon>
+                                <span>Connect</span>
+                            </button>
+                            <button mat-menu-item (click)="check(row.id)">
+                                <mat-icon>check</mat-icon>
+                                <span>Check</span>
+                            </button>
+                            <button mat-menu-item (click)="validate(row.id)">
+                                <mat-icon>done_all</mat-icon>
+                                <span>Validate password</span>
+                            </button>
+                            <button mat-menu-item (click)="log(row.id, '', '', '', '')">
+                                <mat-icon>assessment</mat-icon>
+                                <span>Log</span>
+                            </button>
+                        </mat-menu>
+                    </div>
                 </td>
             </ng-container>
 
@@ -106,7 +112,8 @@
             </tr>
         </table>
 
-        <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of servers" [pageSize]="pageSize"
-            [pageIndex]="pageIndex" [length]="total" (page)="pageEvent = handlePage($event, input.value)"></mat-paginator>
+        <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of servers"
+            [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="total"
+            (page)="pageEvent = handlePage($event, input.value)"></mat-paginator>
     </div>
 </div>

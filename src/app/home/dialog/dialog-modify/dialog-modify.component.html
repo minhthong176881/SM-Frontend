@@ -1,10 +1,17 @@
 <h2 *ngIf="mode == 'add'" mat-dialog-title>Add new server</h2>
 <h2 *ngIf="mode == 'edit'" mat-dialog-title>Edit server</h2>
-<h2 *ngIf="mode == 'delete'" mat-dialog-title>Delete server</h2>
 <mat-dialog-content class="mat-typography">
     <div class="dialog-container" *ngIf="mode != 'delete'">
         <form [formGroup]="form">
             <p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Server name</mat-label>
+                    <input matInput #input formControlName="name" placeholder="Ex. Server A">
+                    <mat-error *ngIf="f.name.hasError('required')">
+                        Server name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+
                 <mat-form-field appearance="fill">
                     <mat-label>IP address</mat-label>
                     <input matInput #input formControlName="ip" placeholder="Ex. 192.168.56.10">
@@ -16,16 +23,19 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field style="margin-left: 15px;" appearance="fill">
+                <mat-form-field appearance="fill">
                     <mat-label>Port number</mat-label>
                     <input matInput #input formControlName="port" placeholder="Ex. 22">
                     <mat-error *ngIf="f.port.hasError('required')">
                         Port number is <strong>required</strong>
                     </mat-error>
+                    <mat-error *ngIf="f.port.hasError('pattern')">
+                        Port number must contain <strong>number</strong> only
+                    </mat-error>
                 </mat-form-field>
             </p>
-            <p>
-                <mat-form-field appearance="fill">
+            <p style="display: flex;">
+                <mat-form-field appearance="fill" style="width: 50%;">
                     <mat-label>Username</mat-label>
                     <input matInput #input formControlName="username" placeholder="Ex. root">
                     <mat-error *ngIf="f.username.hasError('required')">
@@ -33,7 +43,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field style="margin-left: 15px;" appearance="fill">
+                <mat-form-field style="width: 50%;" appearance="fill">
                     <mat-label>Password</mat-label>
                     <input matInput #input formControlName="password" placeholder="Ex. 123abc">
                     <mat-error *ngIf="f.password.hasError('required')">
@@ -50,18 +60,17 @@
         </form>
     </div>
     <div class="dialog-container" *ngIf="mode == 'delete'">
-        <p>Are you sure you want to delete this server {{currentServer.ip}}?</p>
+        <p>Are you sure you want to delete server {{currentServer.name}}?</p>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
     <button *ngIf="mode == 'add'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial 
         (click)="addServer()"
-        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == ''"
+        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid"
     >Add</button>
     <button *ngIf="mode == 'edit'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial 
         (click)="updateServer()"
-        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == ''"
+        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid"
     >Update</button>
-    <button *ngIf="mode == 'delete'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="deleteServer()">Delete</button>
 </mat-dialog-actions>

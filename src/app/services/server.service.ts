@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -64,6 +63,7 @@ export class ServerService {
 export interface Server {
   id: string,
   ip: string,
+  name: string,
   port: number,
   username: string,
   password: string,

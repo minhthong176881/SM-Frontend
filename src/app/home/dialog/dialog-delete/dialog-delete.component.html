@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Delete server</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="dialog-container">
+        <p>Are you sure you want to delete server {{currentServer.name}}?</p>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial (click)="deleteServer()">Delete</button>
+</mat-dialog-actions>

@@ -25,6 +25,10 @@ th {
     width: 15%;
 }
 
+td:hover {
+    cursor: pointer;
+}
+
 .content {
     display: flex;
     padding: 8px 24px;
@@ -41,4 +45,9 @@ th {
 .paginator {
     bottom: 0;
     position: sticky;
+}
+
+.option-btn {
+    background-color: white;
+    border: none;
 }

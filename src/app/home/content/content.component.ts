@@ -1,19 +1,21 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse, DeleteServerResponse } from 'src/app/services/server.service';
-import { DialogComponent } from '../dialog/dialog.component';
+import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse } from 'src/app/services/server.service';
+import { DialogModifyComponent } from '../dialog/dialog-modify/dialog-modify.component';
+import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component'
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
-  styleUrls: ['./content.component.css']
+  styleUrls: ['./content.component.css'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class ContentComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['ip', 'port', 'username', 'password', 'validate', 'status', 'options'];
+  displayedColumns: string[] = ['name', 'ip', 'port', 'username', 'password', 'validate', 'status', 'options'];
   dataSource!: MatTableDataSource<Server>;
   total: number = 0;
   pageSize: number = 5;
@@ -77,28 +79,40 @@ export class ContentComponent implements OnInit, AfterViewInit {
     })
   }
 
-  openDialog(data: Server | null, mode: string) {
-    this.dialog.open(DialogComponent, {
+  openModifyDialog(data: Server | null, mode: string) {
+    let dialog = this.dialog.open(DialogModifyComponent, {
       data: {
         mode: mode,
         server: data
       }
     });
+    dialog.afterClosed().subscribe(() => {
+      this.getServer(this.pageIndex, this.pageSize, "")
+    });
+  }
+
+  openDeleteDialog(data: Server | null) {
+    let dialog = this.dialog.open(DialogDeleteComponent, {data});
+    dialog.afterClosed().subscribe(() => {
+      this.getServer(this.pageIndex, this.pageSize, "")
+    });
   }
 
   edit(id: string) {
     this.serverService.getServerById(id).subscribe((result: Server) => {
-      this.openDialog(result, 'edit');
+      this.openModifyDialog(result, 'edit');
     });
   }
 
   delete(id: string) {
     this.serverService.getServerById(id).subscribe((result: Server) => {
-      this.openDialog(result, 'delete');
+      this.openDeleteDialog(result);
     });
   }
 
   handlePage(event: PageEvent, filterValue: string): PageEvent {
+    this.pageIndex = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
     this.getServer(event.pageIndex + 1, event.pageSize, filterValue.trim().toLowerCase());
     return event;
   }
