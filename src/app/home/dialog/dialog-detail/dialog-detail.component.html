@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Server detail</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content style="display: flex; margin-top: 20px">
+    <div class="detail-left">
+        <p>Server name:</p>
+        <p>IP address: </p>
+        <p>Password: </p>
+        <p>Status: </p>
+        <p>Description:</p>
+    </div>
+    <div class="detail-middle">
+        <p>{{currentServer.name}}</p>
+        <p>{{currentServer.ip}}:{{currentServer.port}}</p>
+        <p>{{currentServer.password}}</p>
+        <p><span *ngIf="currentServer.status">On</span><span *ngIf="!currentServer.status">Off</span></p>
+        <p>{{currentServer.description}}</p>
+    </div>
+    <div class="detail-right">
+        <button mat-raised-button color="primary">Connect <mat-icon>link</mat-icon></button>
+        <p><mat-icon style="transform: scale(5); margin-top: 50px; margin-left: 45px;">storage</mat-icon></p>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+</div>

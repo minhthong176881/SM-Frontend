@@ -25,8 +25,9 @@ th {
     width: 15%;
 }
 
-td:hover {
+.mat-row-custom:hover {
     cursor: pointer;
+    background-color: #fafafa;
 }
 
 .content {
@@ -51,3 +52,8 @@ td:hover {
     background-color: white;
     border: none;
 }
+
+/* .option-btn:hover {
+    background-color: #c2c2c2;
+    border-radius: 4px;
+} */

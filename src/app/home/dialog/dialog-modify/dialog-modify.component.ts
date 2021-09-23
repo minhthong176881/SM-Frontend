@@ -15,6 +15,7 @@ export class DialogModifyComponent implements OnInit {
   public form: FormGroup = new FormGroup({})
   currentServer: Server;
   mode: string;
+  hide = true
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, 
     private fb: FormBuilder, 

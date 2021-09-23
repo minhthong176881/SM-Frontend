@@ -7,13 +7,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
+import { DialogDetailComponent } from './dialog-detail/dialog-detail.component';
 
 
 @NgModule({
   declarations: [
     DialogModifyComponent,
-    DialogDeleteComponent
+    DialogDeleteComponent,
+    DialogDetailComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +27,9 @@ import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule,
+    MatDividerModule
   ]
 })
 export class DialogModule { }

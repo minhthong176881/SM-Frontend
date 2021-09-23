@@ -1,0 +1,14 @@
+.detail-left {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.detail-middle {
+    margin-left: 10px;
+    font-size: 15px;
+    max-width: 400px;
+}
+
+.detail-right {
+    margin-left: 50px
+}

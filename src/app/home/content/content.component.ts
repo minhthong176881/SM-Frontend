@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse } from 'src/app/services/server.service';
 import { DialogModifyComponent } from '../dialog/dialog-modify/dialog-modify.component';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component'
+import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.component';
 
 @Component({
   selector: 'app-content',
@@ -95,6 +96,16 @@ export class ContentComponent implements OnInit, AfterViewInit {
     let dialog = this.dialog.open(DialogDeleteComponent, {data});
     dialog.afterClosed().subscribe(() => {
       this.getServer(this.pageIndex, this.pageSize, "")
+    });
+  }
+
+  openDetailDialog(data: Server | null) {
+    this.dialog.open(DialogDetailComponent, {data});
+  }
+
+  detail(id: string) {
+    this.serverService.getServerById(id).subscribe((result: Server) => {
+      this.openDetailDialog(result);
     });
   }
 

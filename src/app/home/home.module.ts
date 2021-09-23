@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogModule } from './dialog/dialog.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { DialogModule } from './dialog/dialog.module';
     MatTableModule,
     MatSelectModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
 })
 export class HomeModule { }
