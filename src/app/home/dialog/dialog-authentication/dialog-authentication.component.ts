@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,12 +11,19 @@ export class DialogAuthenticationComponent implements OnInit {
   currentUser: string;
   hide = true;
   message: string;
-  authenticated = false;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string, private authService: AuthService) { 
-    this.currentUser = data;
+
+  constructor(
+    private dialogRef: MatDialogRef<DialogAuthenticationComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private authService: AuthService) { 
+    this.currentUser = data.data;
   }
 
   ngOnInit(): void {
+  }
+
+  close() {
+    this.dialogRef.close(false);
   }
 
   authenticate(password: string) {
@@ -26,16 +33,12 @@ export class DialogAuthenticationComponent implements OnInit {
     }
     this.authService.authenticate(user).subscribe(result => {
       if (result === 'SUCCESS') {
-        this.authenticated = true;
-        this.message = "";
+        this.dialogRef.close(true);
       } else if (result === 'FAIL') {
-        this.authenticated = false;
         this.message = 'Password for ' + this.currentUser + ' is incorrect!';
+        console.log(this.message);
       }
-    }, (message) => {
-      this.message = message;
-    }
-    );
+    });
   }
 
 }

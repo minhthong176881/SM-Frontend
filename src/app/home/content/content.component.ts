@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -108,7 +108,15 @@ export class ContentComponent implements OnInit, AfterViewInit {
 
   openAuthenticationDialog(data: string) {
     if (this.hide) {
-      let dialogRef = this.dialog.open(DialogAuthenticationComponent, { data });
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = { data };
+      const dialogRef = this.dialog.open(DialogAuthenticationComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe((data: boolean) => {
+        if (data) this.hide = false;
+        else this.hide = true;
+      });
     }
     else this.hide = true
   }
