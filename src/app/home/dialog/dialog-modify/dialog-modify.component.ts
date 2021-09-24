@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Server, ServerService } from 'src/app/services/server.service';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { HelperService } from 'src/app/services/helper.service';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
   selector: 'app-dialog-modify',
@@ -17,9 +18,10 @@ export class DialogModifyComponent implements OnInit {
   mode: string;
   hide = true
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, 
-    private fb: FormBuilder, 
-    private serverService: ServerService, 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private dialogRef: MatDialogRef<DialogModifyComponent>,
+    private fb: FormBuilder,
+    private serverService: ServerService,
     private helperService: HelperService,
     private _snackBar: MatSnackBar) {
     this.currentServer = data.server;
@@ -52,21 +54,35 @@ export class DialogModifyComponent implements OnInit {
     return this.form.controls;
   }
 
+  close() {
+    this.dialogRef.close(false)
+  }
+
   addServer() {
     this.serverService.add(this.form.value).subscribe(
       (result: Server) => {
-        if (result != null)
+        if (result != null) {
           this.helperService.openSnackBar(this._snackBar, 'Add server successfully!', "", 'success')
-        else this.helperService.openSnackBar(this._snackBar, 'Fail to add server!', "", 'fail')
+          this.dialogRef.close(true)
+        }
+        else {
+          this.helperService.openSnackBar(this._snackBar, 'Fail to add server!', "", 'fail')
+          this.dialogRef.close(false)
+        }
       });
   }
 
   updateServer() {
     this.serverService.update(this.currentServer.id, this.form.value).subscribe(
       (result: Server) => {
-        if (result != null)
-          this.helperService.openSnackBar(this._snackBar,'Update server successfully!', "", 'success')
-        else this.helperService.openSnackBar(this._snackBar, 'Fail to update server!', "", 'fail')
+        if (result != null) {
+          this.helperService.openSnackBar(this._snackBar, 'Update server successfully!', "", 'success')
+          this.dialogRef.close(true)
+        }
+        else {
+          this.helperService.openSnackBar(this._snackBar, 'Fail to update server!', "", 'fail')
+          this.dialogRef.close(false)
+        }
       });
   }
 }

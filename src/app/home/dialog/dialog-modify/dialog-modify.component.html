@@ -69,11 +69,11 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button *ngIf="mode == 'add'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial
+    <button mat-button (click)="close()">Cancel</button>
+    <button *ngIf="mode == 'add'" mat-button type="submit" cdkFocusInitial
         (click)="addServer()"
         [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid">Add</button>
-    <button *ngIf="mode == 'edit'" mat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial
+    <button *ngIf="mode == 'edit'" mat-button type="submit" cdkFocusInitial
         (click)="updateServer()"
         [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid">Update</button>
 </mat-dialog-actions>

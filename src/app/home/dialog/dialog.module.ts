@@ -12,6 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { DialogDetailComponent } from './dialog-detail/dialog-detail.component';
 import { DialogAuthenticationComponent } from './dialog-authentication/dialog-authentication.component';
+import { DialogChartComponent } from './dialog-chart/dialog-chart.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { DialogAuthenticationComponent } from './dialog-authentication/dialog-au
     DialogModifyComponent,
     DialogDeleteComponent,
     DialogDetailComponent,
-    DialogAuthenticationComponent
+    DialogAuthenticationComponent,
+    DialogChartComponent
   ],
   imports: [
     CommonModule,

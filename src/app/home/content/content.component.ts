@@ -8,6 +8,7 @@ import { DialogModifyComponent } from '../dialog/dialog-modify/dialog-modify.com
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component'
 import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.component';
 import { DialogAuthenticationComponent } from '../dialog/dialog-authentication/dialog-authentication.component';
+import { DialogChartComponent } from '../dialog/dialog-chart/dialog-chart.component';
 
 @Component({
   selector: 'app-content',
@@ -77,11 +78,11 @@ export class ContentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  log(id: string, start: string, end: string, date: string, month: string) {
-    this.serverService.log(id, start, end, date, month).subscribe((result: ServerLogResponse) => {
-      console.log(result);
-    })
-  }
+  // log(id: string, start: string, end: string, date: string, month: string) {
+  //   this.serverService.log(id, start, end, date, month).subscribe((result: ServerLogResponse) => {
+  //     console.log(result);
+  //   })
+  // }
 
   openModifyDialog(data: Server | null, mode: string) {
     let dialog = this.dialog.open(DialogModifyComponent, {
@@ -90,19 +91,26 @@ export class ContentComponent implements OnInit, AfterViewInit {
         server: data
       }
     });
-    dialog.afterClosed().subscribe(() => {
-      this.getServer(this.pageIndex, this.pageSize, "")
+    dialog.afterClosed().subscribe((data: boolean) => {
+      if (data)
+        this.getServer(this.pageIndex, this.pageSize, "")
     });
   }
 
   openDeleteDialog(data: Server | null) {
     let dialog = this.dialog.open(DialogDeleteComponent, { data });
-    dialog.afterClosed().subscribe(() => {
-      this.getServer(this.pageIndex, this.pageSize, "")
+    dialog.afterClosed().subscribe((data: boolean) => {
+      if (data)
+        this.getServer(this.pageIndex, this.pageSize, "")
     });
   }
 
-  openDetailDialog(data: Server | null) {
+  openDetailDialog(server: Server | null) {
+    const data = {
+      server: server,
+      hide: this.hide,
+      user: this.user
+    }
     this.dialog.open(DialogDetailComponent, { data });
   }
 
@@ -119,6 +127,14 @@ export class ContentComponent implements OnInit, AfterViewInit {
       });
     }
     else this.hide = true
+  }
+
+  openLogChart(id: string) {
+    this.serverService.log(id, '', '', '', '').subscribe((result: ServerLogResponse) => {
+      const data = result.logs;
+      this.dialog.open(DialogChartComponent, {data});
+      console.log(data)
+    })
   }
 
   detail(id: string) {
