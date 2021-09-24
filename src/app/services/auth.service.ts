@@ -77,6 +77,23 @@ export class AuthService {
       return { unsubscribe() { } };
     });
   }
+
+  authenticate(data: LoginRequest) {
+    return new Observable<string>((observer) => {
+      this.httpService.post<AuthenticateResponse>('users/authenticate', data)
+        .subscribe((detail: AuthenticateResponse) => {
+          if (!detail?.authenticated) {
+            observer.next('FAIL');
+          } else {
+            observer.next('SUCCESS');
+          }
+        },
+          (message) => {
+            observer.error(message);
+          });
+      return { unsubscribe() { } };
+    });
+  }
 }
 
 export interface User {
@@ -99,6 +116,10 @@ export interface LoginRequest {
 export interface LoginResponse {
   username: string,
   accessToken: string,
+}
+
+export interface AuthenticateResponse {
+  authenticated: boolean,
 }
 
 export interface LogoutResponse {

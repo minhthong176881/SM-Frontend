@@ -11,13 +11,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { DialogDetailComponent } from './dialog-detail/dialog-detail.component';
+import { DialogAuthenticationComponent } from './dialog-authentication/dialog-authentication.component';
 
 
 @NgModule({
   declarations: [
     DialogModifyComponent,
     DialogDeleteComponent,
-    DialogDetailComponent
+    DialogDetailComponent,
+    DialogAuthenticationComponent
   ],
   imports: [
     CommonModule,

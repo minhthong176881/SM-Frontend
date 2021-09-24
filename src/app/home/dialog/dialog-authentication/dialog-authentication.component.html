@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Authentication required</h2>
+<h4>Authentication is required to show the passwords</h4>
+<mat-dialog-content class="mat-typography" style="text-align: center;">
+    <div class="dialog-container">
+        <div>
+            <mat-icon style="transform: scale(3); margin-top: 20px;">account_circle</mat-icon>
+        </div>
+        <p style="margin-top: 20px;">{{currentUser}}</p>
+        <p>
+            <mat-form-field style="width: 100%;" appearance="fill">
+                <mat-label>Password for {{currentUser}}</mat-label>
+                <input matInput #input [type]="hide ? 'password' : 'text'"
+                    placeholder="Ex. 123abc">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="message != ''">
+                    {{message}}
+                </mat-error>
+            </mat-form-field>
+        </p>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button type="submit" [disabled]="input.value == ''" (click)="authenticate(input.value)">Authenticate</button>
+</mat-dialog-actions>

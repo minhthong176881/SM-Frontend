@@ -5,7 +5,7 @@
         <input matInput type="search" (keyup)="applyFilter($event)" placeholder="Search here" class="search-input"
             #input>
     </mat-form-field>
-    <button style="height: 75%; margin-top: 10px; margin-left: 15px"
+    <button style="height: 75%; margin-top: 10px; margin-left: 15px" matTooltip="Refresh"
         (click)="getServer(1, pageSize, ''); input.value = ''" mat-raised-button color="primary">
         <mat-icon>refresh</mat-icon>
     </button>
@@ -52,8 +52,16 @@
 
             <!-- Password Column -->
             <ng-container matColumnDef="password">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Password </th>
-                <td mat-cell *matCellDef="let row"> {{row.password}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Password 
+                    <button mat-icon-button matSuffix style="right: 0;" (click)="openAuthenticationDialog(user)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                </th>
+                <td mat-cell *matCellDef="let row"> 
+                    <span *ngIf="hide">******</span>
+                    <span *ngIf="!hide">{{row.password}} </span>
+                </td>
             </ng-container>
 
             <!-- Validate Column -->
@@ -72,16 +80,20 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Options </th>
                 <td mat-cell *matCellDef="let row">
                     <div style="display: flex;">
-                        <button (click)="detail(row.id)" matTooltip="Server detail" aria-label="Server detail" class="option-btn" style="color: blue;">
+                        <button (click)="detail(row.id)" matTooltip="Server detail" aria-label="Server detail"
+                            class="option-btn" style="color: blue;">
                             <mat-icon>info</mat-icon>
                         </button>
-                        <button (click)="edit(row.id)" matTooltip="Edit server information" class="option-btn" style="color: green;">
+                        <button (click)="edit(row.id)" matTooltip="Edit server information" class="option-btn"
+                            style="color: green;">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button (click)="delete(row.id)" matTooltip="Delete server" class="option-btn" style="color: red">
+                        <button (click)="delete(row.id)" matTooltip="Delete server" class="option-btn"
+                            style="color: red">
                             <mat-icon>delete</mat-icon>
                         </button>
-                        <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More options" aria-label="Example icon-button with a menu">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More options"
+                            aria-label="Example icon-button with a menu">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">

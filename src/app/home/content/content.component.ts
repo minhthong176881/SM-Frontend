@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -7,6 +7,7 @@ import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckRespo
 import { DialogModifyComponent } from '../dialog/dialog-modify/dialog-modify.component';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component'
 import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.component';
+import { DialogAuthenticationComponent } from '../dialog/dialog-authentication/dialog-authentication.component';
 
 @Component({
   selector: 'app-content',
@@ -16,6 +17,7 @@ import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.com
 })
 export class ContentComponent implements OnInit, AfterViewInit {
 
+  @Input() user!: string;
   displayedColumns: string[] = ['name', 'ip', 'port', 'username', 'password', 'validate', 'status', 'options'];
   dataSource!: MatTableDataSource<Server>;
   total: number = 0;
@@ -23,6 +25,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   pageIndex: number = 1;
   pageEvent!: PageEvent;
   isLoading = true;
+  hide = true;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -93,14 +96,21 @@ export class ContentComponent implements OnInit, AfterViewInit {
   }
 
   openDeleteDialog(data: Server | null) {
-    let dialog = this.dialog.open(DialogDeleteComponent, {data});
+    let dialog = this.dialog.open(DialogDeleteComponent, { data });
     dialog.afterClosed().subscribe(() => {
       this.getServer(this.pageIndex, this.pageSize, "")
     });
   }
 
   openDetailDialog(data: Server | null) {
-    this.dialog.open(DialogDetailComponent, {data});
+    this.dialog.open(DialogDetailComponent, { data });
+  }
+
+  openAuthenticationDialog(data: string) {
+    if (this.hide) {
+      let dialogRef = this.dialog.open(DialogAuthenticationComponent, { data });
+    }
+    else this.hide = true
   }
 
   detail(id: string) {
