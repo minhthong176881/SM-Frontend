@@ -1,0 +1,12 @@
+.date-container {
+    /* display: flex; */
+    margin-top: 20px;
+}
+
+.month {
+    margin-left: auto;
+}
+
+#chartdiv {
+    margin-top: 20px;
+}

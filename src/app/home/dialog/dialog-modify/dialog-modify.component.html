@@ -63,6 +63,7 @@
                 </mat-form-field>
             </p>
         </form>
+        <div id="error-message" style="color: red;"></div>
     </div>
     <div class="dialog-container" *ngIf="mode == 'delete'">
         <p>Are you sure you want to delete server {{currentServer.name}}?</p>
@@ -72,8 +73,8 @@
     <button mat-button (click)="close()">Cancel</button>
     <button *ngIf="mode == 'add'" mat-button type="submit" cdkFocusInitial
         (click)="addServer()"
-        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid">Add</button>
+        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid || message != ''">Add</button>
     <button *ngIf="mode == 'edit'" mat-button type="submit" cdkFocusInitial
         (click)="updateServer()"
-        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid">Update</button>
+        [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid || message != ''">Update</button>
 </mat-dialog-actions>

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService, User } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HelperService } from '../services/helper.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   protected loading: boolean = false;
   constructor(private fb: FormBuilder,
     private authService: AuthService,
+    private helperService: HelperService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) { }
@@ -28,7 +30,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
     }, {
-      validator: this.confirmValidator('password', 'confirmPassword')
+      validator: this.helperService.confirmValidator('password', 'confirmPassword')
     });
   }
 
@@ -90,21 +92,6 @@ export class LoginComponent implements OnInit {
       this.loading = false;
     }
     );
-  }
-
-  confirmValidator(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-      if (matchingControl.errors && !matchingControl.errors.confirmValidator) {
-        return;
-      }
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ confirmValidator: true });
-      } else {
-        matchingControl.setErrors(null);
-      }
-    };
   }
 }
 

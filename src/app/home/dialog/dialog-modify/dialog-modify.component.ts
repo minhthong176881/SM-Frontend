@@ -2,9 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Server, ServerService } from 'src/app/services/server.service';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HelperService } from 'src/app/services/helper.service';
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 
 @Component({
   selector: 'app-dialog-modify',
@@ -16,7 +15,8 @@ export class DialogModifyComponent implements OnInit {
   public form: FormGroup = new FormGroup({})
   currentServer: Server;
   mode: string;
-  hide = true
+  hide = true;
+  message = '';
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dialogRef: MatDialogRef<DialogModifyComponent>,
@@ -69,7 +69,13 @@ export class DialogModifyComponent implements OnInit {
           this.helperService.openSnackBar(this._snackBar, 'Fail to add server!', "", 'fail')
           this.dialogRef.close(false)
         }
-      });
+      },
+      err => {
+        this.message = err.message;
+        let errMsg = document.getElementById('error-message')
+        errMsg!.innerText = this.message;
+      },
+      );
   }
 
   updateServer() {
@@ -83,7 +89,13 @@ export class DialogModifyComponent implements OnInit {
           this.helperService.openSnackBar(this._snackBar, 'Fail to update server!', "", 'fail')
           this.dialogRef.close(false)
         }
-      });
+      },
+      err => {
+        this.message = err.message;
+        let errMsg = document.getElementById('error-message')
+        errMsg!.innerText = this.message;
+      },
+      );
   }
 }
 

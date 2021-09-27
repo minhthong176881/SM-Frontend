@@ -30,6 +30,13 @@
                             "src/custom-theme.scss",
                             "src/styles.css"
                         ],
+                        "allowedCommonJsDependencies": [
+                            "core-js",
+                            "raf",
+                            "xlsx",
+                            "@babel/runtime",
+                            "pdfmake"
+                        ],
                         "scripts": []
                     },
                     "configurations": {

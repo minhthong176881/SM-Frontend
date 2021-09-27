@@ -36,7 +36,8 @@ export class DialogAuthenticationComponent implements OnInit {
         this.dialogRef.close(true);
       } else if (result === 'FAIL') {
         this.message = 'Password for ' + this.currentUser + ' is incorrect!';
-        console.log(this.message);
+        let err = document.getElementById('error-message')
+        err!.innerText = this.message;
       }
     });
   }

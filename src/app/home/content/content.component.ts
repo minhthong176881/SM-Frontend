@@ -131,9 +131,12 @@ export class ContentComponent implements OnInit, AfterViewInit {
 
   openLogChart(id: string) {
     this.serverService.log(id, '', '', '', '').subscribe((result: ServerLogResponse) => {
-      const data = result.logs;
+      const logs = result.logs;
+      const data = {
+        logs: logs,
+        id: id
+      }
       this.dialog.open(DialogChartComponent, {data});
-      console.log(data)
     })
   }
 

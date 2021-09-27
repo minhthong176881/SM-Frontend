@@ -15,12 +15,13 @@
                     [attr.aria-pressed]="hide">
                     <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
-                <mat-error *ngIf="message">
+                <!-- <mat-error id="error-message" *ngIf="message">
                     {{message}}
-                </mat-error>
+                </mat-error> -->
             </mat-form-field>
         </p>
-    </div>
+        <div id="error-message"></div>
+    </div> 
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button (click)="close()">Cancel</button>

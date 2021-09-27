@@ -1,7 +1,60 @@
-<h1 mat-dialog-title>Server detail</h1>
+<h1 mat-dialog-title>Server status</h1>
 <mat-divider></mat-divider>
 <div mat-dialog-content>
-    <div id="chartdiv" style="width: 750px; height: 500px;"></div>
+    <div class="date-container">
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Get logs options</mat-label>
+                <mat-select [(value)]="options">
+                    <mat-option value="ALL" (click)="getLog('', '')">All logs</mat-option>
+                    <mat-option value="DATE">Date</mat-option>
+                    <mat-option value="MONTH">Month</mat-option>
+                    <mat-option value="RANGE">In range</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <p *ngIf="options" hidden>{{options}}</p>
+        <p hidden>{{log}}</p>
+        <div [ngSwitch]="options" style="display: flex;">
+            <div *ngSwitchCase="'ALL'"></div>
+            <div *ngSwitchCase="'DATE'">
+                <mat-form-field appearance="fill">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" #date (dateChange)="getLog(date.value, '')">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div *ngSwitchCase="'MONTH'">
+                <app-date (dateEvent)="getLog('', $event)"></app-date>
+            </div>
+            <div *ngSwitchCase="'RANGE'">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date">
+                        <input matEndDate formControlName="end" (dateChange)="getLog('', '')" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date
+                    </mat-error>
+                    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                </mat-form-field>
+            </div>
+            <!-- <div style="margin-left: 20px;">
+                <button mat-raised-button color="primary" (click)="getLog()">
+                    Get logs
+                    <mat-icon style="margin-left: 5px; margin-bottom: 5px;">assessment</mat-icon>
+                </button>
+            </div> -->
+        </div>
+
+    </div>
+
+    <div id="chartdiv" style="width: 1450px; height: 400px;"></div>
 </div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions>
