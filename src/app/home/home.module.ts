@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogModule } from './dialog/dialog.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CustomPaginatorComponent } from './content/custom-paginator/custom-paginator.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     HomeComponent,
     TopbarComponent,
     ContentComponent,
+    CustomPaginatorComponent,
   ],
   imports: [
     CommonModule,

@@ -23,7 +23,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   dataSource!: MatTableDataSource<Server>;
   total: number = 0;
   pageSize: number = 5;
-  pageIndex: number = 1;
+  pageIndex: number = 0;
   pageEvent!: PageEvent;
   isLoading = true;
   hide = true;
@@ -34,7 +34,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   constructor(private serverService: ServerService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.getServer(1, 5, '');
+    this.getServer(0, 5, '');
   }
 
   ngAfterViewInit() {
@@ -42,12 +42,17 @@ export class ContentComponent implements OnInit, AfterViewInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.getServer(1, 5, filterValue.trim().toLowerCase());
+    this.getServer(0, 5, filterValue.trim().toLowerCase());
+  }
+
+  refresh() {
+    this.pageIndex = 0;
+    this.getServer(this.pageIndex, this.pageSize, '');
   }
 
   getServer(pageIndex: number, pageOffset: number, query: string) {
     this.isLoading = true;
-    this.serverService.getServers(pageIndex, pageOffset, query).subscribe((result: ServerResponse) => {
+    this.serverService.getServers(pageIndex + 1, pageOffset, query).subscribe((result: ServerResponse) => {
       this.total = result.total;
       this.dataSource = new MatTableDataSource(result.servers);
       this.dataSource.paginator = this.paginator;
@@ -159,9 +164,10 @@ export class ContentComponent implements OnInit, AfterViewInit {
   }
 
   handlePage(event: PageEvent, filterValue: string): PageEvent {
-    this.pageIndex = event.pageIndex + 1;
+    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.getServer(event.pageIndex + 1, event.pageSize, filterValue.trim().toLowerCase());
+    this.total = event.length;
+    this.getServer(event.pageIndex, event.pageSize, filterValue.trim().toLowerCase());
     return event;
   }
 }
