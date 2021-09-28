@@ -1,1 +1,17 @@
-<p>custom-paginator works!</p>
+<div class="paginator-container">
+    <div class="page-size-div">
+        Items per page:
+        <mat-form-field class="page-size" appearance="standard">
+            <mat-select [(value)]="pageSize" (selectionChange)="pageSizeChange($event)"> 
+                <mat-option [value]="option" *ngFor="let option of pageSizeOptions">{{option}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="range-div">
+        {{start}} - {{end}} of {{total}}
+    </div>
+    <div class="page-btn">
+        <mat-icon class="prev-btn" matTooltip="Previous page" [ngClass]="{'disabled-btn' : !currentPage}" (click)="prevPageChange()">navigate_before</mat-icon>
+        <mat-icon class="next-btn" matTooltip="Next page" [ngClass]="{'disabled-btn' : !hasNextPage}" (click)="nextPageChange()">navigate_next</mat-icon>
+    </div>
+</div>

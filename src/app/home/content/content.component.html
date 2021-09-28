@@ -19,15 +19,16 @@
         </button>
     </div>
 </div>
-<div style="margin-left: 24px;">
-    Page index: {{pageIndex}}, Page size: {{pageSize}}, Total: {{total}}
-</div>
+<!-- <div style="margin-left: 24px;">
+    Page index: {{pageIndex}}, Page size: {{pageSize}}, Total: {{total}}, Item in page: {{itemInPage}}
+</div> -->
 <div class="data">
     <div class="mat-elevation-z8" style="overflow: auto; max-height: 76vh;">
         <!-- <div class="loading-shade" *ngIf="isLoading">
             <mat-spinner *ngIf="isLoading"></mat-spinner>
         </div> -->
-        <table mat-table [dataSource]="dataSource" matSort matSortActive="status" matSortDisableClear matSortDirection="desc">
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="status" matSortDisableClear
+            matSortDirection="desc">
 
             <!-- Server Name Column -->
             <ng-container matColumnDef="name">
@@ -55,13 +56,13 @@
 
             <!-- Password Column -->
             <ng-container matColumnDef="password">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Password 
-                    <button mat-icon-button matSuffix style="right: 0;" (click)="openAuthenticationDialog(user)" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Password
+                    <button mat-icon-button matSuffix style="right: 0;" (click)="openAuthenticationDialog(user)"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
                 </th>
-                <td mat-cell *matCellDef="let row"> 
+                <td mat-cell *matCellDef="let row">
                     <span *ngIf="hide">******</span>
                     <span *ngIf="!hide">{{row.password}} </span>
                 </td>
@@ -70,13 +71,29 @@
             <!-- Validate Column -->
             <ng-container matColumnDef="validate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Password Validated </th>
-                <td mat-cell *matCellDef="let row"> {{row.validate}} </td>
+                <td mat-cell *matCellDef="let row">
+                    <!-- {{row.validate}}  -->
+                    <span *ngIf="row.validate" style="color: green">
+                        <mat-icon>check</mat-icon>
+                    </span>
+                    <span *ngIf="!row.validate" style="color: red">
+                        <mat-icon>close</mat-icon>
+                    </span>
+                </td>
             </ng-container>
 
             <!-- Status Column -->
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Status </th>
-                <td mat-cell *matCellDef="let row"> {{row.status}} </td>
+                <td mat-cell *matCellDef="let row">
+                    <!-- {{row.status}}  -->
+                    <span *ngIf="row.status" style="color: green">
+                        <mat-icon>check</mat-icon>
+                    </span>
+                    <span *ngIf="!row.status" style="color: red">
+                        <mat-icon>close</mat-icon>
+                    </span>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="options">
@@ -129,9 +146,18 @@
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr>
         </table>
-
-        <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
+        <app-custom-paginator 
+            (pageSizeEvent)="handlePageSizeChange($event)" 
+            (nextPageEvent)="handlePageIndexChange($event)"
+            (prevPageEvent)="handlePageIndexChange($event)"
+            [total]="total"
+            [range]="itemInPage"
+            [currentPage]="pageIndex"
+            [hasNextPage]="hasNexPage"
+        >
+        </app-custom-paginator>
+        <!-- <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
             [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="total"
-            (page)="pageEvent = handlePage($event, input.value)"></mat-paginator>
+            (page)="pageEvent = handlePage($event, input.value)"></mat-paginator> -->
     </div>
 </div>

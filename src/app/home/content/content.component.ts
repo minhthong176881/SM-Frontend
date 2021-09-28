@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse } from 'src/app/services/server.service';
+import { ServerService, Server, ServerResponse, ExportResponse, ServerCheckResponse, ServerValidateResponse, ServerLogResponse } from '../../services/server.service';
 import { DialogModifyComponent } from '../dialog/dialog-modify/dialog-modify.component';
 import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.component'
 import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.component';
@@ -25,8 +25,11 @@ export class ContentComponent implements OnInit, AfterViewInit {
   pageSize: number = 5;
   pageIndex: number = 0;
   pageEvent!: PageEvent;
+  itemInPage: number = 0;
+  hasNexPage: boolean;
   isLoading = true;
   hide = true;
+  data: Server[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -37,8 +40,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
     this.getServer(0, 5, '');
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -55,9 +57,12 @@ export class ContentComponent implements OnInit, AfterViewInit {
     this.serverService.getServers(pageIndex + 1, pageOffset, query).subscribe((result: ServerResponse) => {
       this.total = result.total;
       this.dataSource = new MatTableDataSource(result.servers);
+      this.itemInPage = result.servers.length;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;;
       this.isLoading = false;
+      if (this.itemInPage < this.pageSize) this.hasNexPage = false;
+      else this.hasNexPage = true;
     });
   }
 
@@ -163,11 +168,14 @@ export class ContentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  handlePage(event: PageEvent, filterValue: string): PageEvent {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.total = event.length;
-    this.getServer(event.pageIndex, event.pageSize, filterValue.trim().toLowerCase());
-    return event;
+  handlePageSizeChange(pageSize: number) {
+    this.pageIndex = 0;
+    this.pageSize = pageSize;
+    this.getServer(this.pageIndex, this.pageSize, '');
+  }
+
+  handlePageIndexChange(pageIndex: number) {
+    this.pageIndex = pageIndex;
+    this.getServer(this.pageIndex, this.pageSize, '');
   }
 }
