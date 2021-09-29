@@ -9,6 +9,7 @@ import { DialogDeleteComponent } from '../dialog/dialog-delete/dialog-delete.com
 import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.component';
 import { DialogAuthenticationComponent } from '../dialog/dialog-authentication/dialog-authentication.component';
 import { DialogChartComponent } from '../dialog/dialog-chart/dialog-chart.component';
+import { Task } from './custom-table/custom-table.component';
 
 @Component({
   selector: 'app-content',
@@ -177,5 +178,17 @@ export class ContentComponent implements OnInit, AfterViewInit {
   handlePageIndexChange(pageIndex: number) {
     this.pageIndex = pageIndex;
     this.getServer(this.pageIndex, this.pageSize, '');
+  }
+
+  handleColumnChange(task: Task) {
+    let columns: string[] = [];
+    task.subtasks?.forEach(s => {
+      if (s.completed) {
+        if (s.name === 'Password validate') columns.push('validate');
+        else columns.push(s.name.toLowerCase());
+      }
+    });
+    this.displayedColumns = columns;
+    this.displayedColumns.push('options');
   }
 }

@@ -23,7 +23,7 @@
     Page index: {{pageIndex}}, Page size: {{pageSize}}, Total: {{total}}, Item in page: {{itemInPage}}
 </div> -->
 <div class="data">
-    <div class="mat-elevation-z8" style="overflow: auto; max-height: 76vh;">
+    <div class="mat-elevation-z8" style="overflow: auto; max-height: 80vh; width: 100%; margin-right: 16px;">
         <!-- <div class="loading-shade" *ngIf="isLoading">
             <mat-spinner *ngIf="isLoading"></mat-spinner>
         </div> -->
@@ -146,18 +146,15 @@
                 <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr>
         </table>
-        <app-custom-paginator 
-            (pageSizeEvent)="handlePageSizeChange($event)" 
-            (nextPageEvent)="handlePageIndexChange($event)"
-            (prevPageEvent)="handlePageIndexChange($event)"
-            [total]="total"
-            [range]="itemInPage"
-            [currentPage]="pageIndex"
-            [hasNextPage]="hasNexPage"
-        >
+        <app-custom-paginator (pageSizeEvent)="handlePageSizeChange($event)"
+            (nextPageEvent)="handlePageIndexChange($event)" (prevPageEvent)="handlePageIndexChange($event)"
+            [total]="total" [range]="itemInPage" [currentPage]="pageIndex" [hasNextPage]="hasNexPage">
         </app-custom-paginator>
         <!-- <mat-paginator class="paginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
             [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="total"
             (page)="pageEvent = handlePage($event, input.value)"></mat-paginator> -->
+    </div>
+    <div style="margin-left: auto;">
+        <app-custom-table (taskEvent)="handleColumnChange($event)"></app-custom-table>
     </div>
 </div>

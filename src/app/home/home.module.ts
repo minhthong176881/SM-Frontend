@@ -18,7 +18,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogModule } from './dialog/dialog.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 import { CustomPaginatorComponent } from './content/custom-paginator/custom-paginator.component';
+import { CustomTableComponent } from './content/custom-table/custom-table.component';
 
 
 @NgModule({
@@ -27,11 +30,13 @@ import { CustomPaginatorComponent } from './content/custom-paginator/custom-pagi
     TopbarComponent,
     ContentComponent,
     CustomPaginatorComponent,
+    CustomTableComponent,
   ],
   imports: [
     CommonModule,
     DialogModule,
     HomeRoutingModule,
+    FormsModule,
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
@@ -44,7 +49,8 @@ import { CustomPaginatorComponent } from './content/custom-paginator/custom-pagi
     MatSelectModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCheckboxModule
   ],
 })
 export class HomeModule { }

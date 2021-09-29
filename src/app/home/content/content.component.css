@@ -40,7 +40,8 @@ th {
     margin-top: 20px;
     margin-left: 24px;
     margin-right: 24px;
-    height: 79vh;
+    height: 82vh;
+    display: flex;
 }
 
 .paginator {
