@@ -10,6 +10,8 @@ import { DialogDetailComponent } from '../dialog/dialog-detail/dialog-detail.com
 import { DialogAuthenticationComponent } from '../dialog/dialog-authentication/dialog-authentication.component';
 import { DialogChartComponent } from '../dialog/dialog-chart/dialog-chart.component';
 import { Task } from './custom-table/custom-table.component';
+import { UserDetail } from 'src/app/services/auth.service';
+import { DialogWarnComponent } from '../dialog/dialog-warn/dialog-warn.component';
 
 @Component({
   selector: 'app-content',
@@ -19,7 +21,7 @@ import { Task } from './custom-table/custom-table.component';
 })
 export class ContentComponent implements OnInit, AfterViewInit {
 
-  @Input() user!: string;
+  @Input() user!: UserDetail;
   displayedColumns: string[] = ['name', 'ip', 'port', 'username', 'password', 'validate', 'status', 'options'];
   dataSource!: MatTableDataSource<Server>;
   total: number = 0;
@@ -41,11 +43,12 @@ export class ContentComponent implements OnInit, AfterViewInit {
     this.getServer(0, 5, '');
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.getServer(0, 5, filterValue.trim().toLowerCase());
+    this.pageIndex = 0;
+    this.getServer(this.pageIndex, this.pageSize, filterValue.trim().toLowerCase());
   }
 
   refresh() {
@@ -78,22 +81,27 @@ export class ContentComponent implements OnInit, AfterViewInit {
   }
 
   check(id: string) {
-    this.serverService.check(id).subscribe((result: ServerCheckResponse) => {
-      console.log(result);
-    });
+    if (this.user.role === 'admin') {
+      this.serverService.check(id).subscribe((result: ServerCheckResponse) => {
+        console.log(result);
+      });
+    } else this.openWarnDialog('check');
   }
 
   validate(id: string) {
-    this.serverService.validate(id).subscribe((result: ServerValidateResponse) => {
-      console.log(result);
-    });
+    if (this.user.role === 'admin') {
+      this.serverService.validate(id).subscribe((result: ServerValidateResponse) => {
+        console.log(result);
+      });
+    } else this.openWarnDialog('validate');
   }
 
-  // log(id: string, start: string, end: string, date: string, month: string) {
-  //   this.serverService.log(id, start, end, date, month).subscribe((result: ServerLogResponse) => {
-  //     console.log(result);
-  //   })
-  // }
+  log(id: string) {
+    if (this.user.role === 'admin') {
+      this.openLogChart(id);
+    }
+    else this.openWarnDialog('log');
+  }
 
   openModifyDialog(data: Server | null, mode: string) {
     let dialog = this.dialog.open(DialogModifyComponent, {
@@ -147,8 +155,12 @@ export class ContentComponent implements OnInit, AfterViewInit {
         logs: logs,
         id: id
       }
-      this.dialog.open(DialogChartComponent, {data});
+      this.dialog.open(DialogChartComponent, { data });
     })
+  }
+
+  openWarnDialog(mode: string) {
+    this.dialog.open(DialogWarnComponent, { data: { mode } });
   }
 
   detail(id: string) {
@@ -158,15 +170,26 @@ export class ContentComponent implements OnInit, AfterViewInit {
   }
 
   edit(id: string) {
-    this.serverService.getServerById(id).subscribe((result: Server) => {
-      this.openModifyDialog(result, 'edit');
-    });
+    if (this.user.role === 'admin') {
+      this.serverService.getServerById(id).subscribe((result: Server) => {
+        this.openModifyDialog(result, 'edit');
+      });
+    }
+    else this.openWarnDialog('edit');
   }
 
   delete(id: string) {
-    this.serverService.getServerById(id).subscribe((result: Server) => {
-      this.openDeleteDialog(result);
-    });
+    if (this.user.role === 'admin') {
+      this.serverService.getServerById(id).subscribe((result: Server) => {
+        this.openDeleteDialog(result);
+      });
+    } else this.openWarnDialog('delete');
+  }
+
+  viewPassword() {
+    if (this.user.role === 'admin') {
+      this.openAuthenticationDialog(this.user.username);
+    } else this.openWarnDialog('view');
   }
 
   handlePageSizeChange(pageSize: number) {
@@ -184,7 +207,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
     let columns: string[] = [];
     task.subtasks?.forEach(s => {
       if (s.completed) {
-        if (s.name === 'Password validate') columns.push('validate');
+        if (s.name === 'Server validate') columns.push('validate');
         else columns.push(s.name.toLowerCase());
       }
     });

@@ -26,7 +26,7 @@ export class CustomTableComponent implements OnInit {
       { name: 'Port', completed: true, color: 'primary' },
       { name: 'Username', completed: true, color: 'primary' },
       { name: 'Password', completed: true, color: 'primary' },
-      { name: 'Password validate', completed: true, color: 'primary' },
+      { name: 'Server validate', completed: true, color: 'primary' },
       { name: 'Status', completed: true, color: 'primary' },
     ]
   };

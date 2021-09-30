@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService, UserDetail } from '../services/auth.service';
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-home',
@@ -7,13 +8,13 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private _currentUser: string;
+  private _currentUser: UserDetail;
   get currentUser() {
     return this._currentUser;
   }
 
   constructor(private authService: AuthService) { 
-    this._currentUser = this.authService.userDetail.username;
+    this._currentUser = jwt_decode(this.authService.userDetail.accessToken);
   }
 
   ngOnInit(): void {

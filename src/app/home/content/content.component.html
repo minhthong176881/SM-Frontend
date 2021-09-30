@@ -57,7 +57,7 @@
             <!-- Password Column -->
             <ng-container matColumnDef="password">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Password
-                    <button mat-icon-button matSuffix style="right: 0;" (click)="openAuthenticationDialog(user)"
+                    <button mat-icon-button matSuffix style="right: 0;" (click)="viewPassword()"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
@@ -70,7 +70,7 @@
 
             <!-- Validate Column -->
             <ng-container matColumnDef="validate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Password Validated </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Server Validated </th>
                 <td mat-cell *matCellDef="let row">
                     <!-- {{row.validate}}  -->
                     <span *ngIf="row.validate" style="color: green">
@@ -129,7 +129,7 @@
                                 <mat-icon>done_all</mat-icon>
                                 <span>Validate password</span>
                             </button>
-                            <button mat-menu-item (click)="openLogChart(row.id)">
+                            <button mat-menu-item (click)="log(row.id)">
                                 <mat-icon>assessment</mat-icon>
                                 <span>Log</span>
                             </button>

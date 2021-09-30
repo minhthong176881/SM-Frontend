@@ -6,7 +6,7 @@
   <span style="margin-left: 15px;">Server Management</span>
   <button style="margin-left: auto; margin-right: 40px; background-color: #eb1c2e; color: white; border: none"
     mat-icon-button [matMenuTriggerFor]="menu">
-    <span *ngIf="user" style="font-size: 15px; margin-right: 5px;">{{user}}</span>
+    <span *ngIf="user" style="font-size: 15px; margin-right: 5px;">{{user.username}}</span>
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">

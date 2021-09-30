@@ -1,0 +1,35 @@
+
+  
+version: "3.8"
+services: 
+    web:
+        # image: 127.0.0.1:5000/server-management
+        image: server-management
+        # build: .
+        ports: 
+            - "11000:11000"
+        # volumes: 
+        #     - ".:/app"
+        depends_on: 
+            - "redis"
+            - "elasticsearch"
+        secrets:
+            - cert
+            - key
+    redis:
+        image: "redis:latest"
+        ports: 
+            - "6379:6379"
+    elasticsearch:
+        image: "docker.elastic.co/elasticsearch/elasticsearch:7.14.0"
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        environment: 
+            - "discovery.type=single-node"
+
+secrets:
+    cert: 
+        file: cert.pem
+    key:
+        file: key.pem

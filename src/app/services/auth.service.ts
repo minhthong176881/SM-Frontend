@@ -46,7 +46,6 @@ export class AuthService {
           } else {
             var currentUser = {
               accessToken: detail.accessToken,
-              username: data.username
             }
             this._userDetails = new BehaviorSubject<LoginResponse>(currentUser);
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -104,6 +103,12 @@ export interface User {
   role: string,
 }
 
+export interface UserDetail {
+  username: string;
+  role: string;
+}
+
+
 export interface RegisterRequest {
   user: User
 }
@@ -114,7 +119,6 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  username: string,
   accessToken: string,
 }
 
