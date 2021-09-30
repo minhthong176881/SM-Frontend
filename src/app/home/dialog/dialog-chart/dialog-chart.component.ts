@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, NgZone, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 // amCharts imports
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
@@ -12,7 +12,7 @@ import { ServerLogResponse, ServerService } from 'src/app/services/server.servic
   styleUrls: ['./dialog-chart.component.css'],
 })
 
-export class DialogChartComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DialogChartComponent implements OnInit {
   private chart: am4charts.XYChart;
   log: Array<any>;
   id: string;
@@ -21,54 +21,43 @@ export class DialogChartComponent implements OnInit, AfterViewInit, OnDestroy {
     end: new FormControl()
   });
   month: string;
-  options = 'ALL' ;
+  options = 'ALL';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private zone: NgZone, private serverService: ServerService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private serverService: ServerService) {
     this.log = data.logs;
     this.id = data.id;
   }
 
   ngOnInit(): void {
+    this.drawChart();
   }
 
-  ngAfterViewInit() {
-    // Chart code goes in here
-    this.zone.runOutsideAngular(() => {
-      let chart = am4core.create('chartdiv', am4charts.XYChart);
-      let title = chart.titles.create();
-      title.text = 'Chart Title';
+  drawChart() {
+    let chart = am4core.create('chartdiv', am4charts.XYChart);
+    let title = chart.titles.create();
+    title.text = 'Log detail';
 
-      let data = this.preprocessData(this.log);
+    let data = this.preprocessData(this.log);
 
-      chart.data = data;
-      let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.title.text = 'Time';
-      categoryAxis.dataFields.category = "time";
-      let valueYAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueYAxis.title.text = 'Status';
-      valueYAxis.renderer.minWidth = 20;
+    chart.data = data;
+    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.title.text = 'Time';
+    categoryAxis.dataFields.category = "time";
+    let valueYAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueYAxis.title.text = 'Status';
+    valueYAxis.renderer.minWidth = 20;
 
-      let series = chart.series.push(new am4charts.LineSeries());
-      series.dataFields.categoryX = "time";
-      series.dataFields.valueY = "status";
+    let series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.categoryX = "time";
+    series.dataFields.valueY = "status";
 
-      let bullet = series.bullets.push(new am4charts.CircleBullet());
-      bullet.tooltipText = "Time: {categoryX} \n Status: {valueY}";
-      bullet.circle.strokeWidth = 2;
-      bullet.circle.radius = 4;
+    let bullet = series.bullets.push(new am4charts.CircleBullet());
+    bullet.tooltipText = "Time: {date} \n Status: {valueY}";
+    bullet.circle.strokeWidth = 2;
+    bullet.circle.radius = 4;
 
-      // chart.legend = new am4charts.Legend();
-      this.chart = chart;
-    });
-  }
-
-  ngOnDestroy() {
-    // Clean up chart when the component is removed
-    this.zone.runOutsideAngular(() => {
-      if (this.chart) {
-        this.chart.dispose();
-      }
-    });
+    // chart.legend = new am4charts.Legend();
+    this.chart = chart;
   }
 
   getLog(date: string, month: string) {
@@ -96,7 +85,10 @@ export class DialogChartComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.serverService.log(this.id, start, end, dateStr, monthStr).subscribe((result: ServerLogResponse) => {
       this.log = result.logs;
-      console.log(this.log);
+      if (this.chart) {
+        this.chart.dispose();
+      }
+      this.drawChart();
     })
   }
 
