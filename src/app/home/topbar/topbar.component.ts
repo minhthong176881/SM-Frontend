@@ -10,7 +10,6 @@ import { AuthService, UserDetail } from 'src/app/services/auth.service';
 export class TopbarComponent implements OnInit {
 
   @Input() user!: UserDetail;
-  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
   constructor(private authService: AuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,

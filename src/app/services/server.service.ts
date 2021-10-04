@@ -58,6 +58,9 @@ export class ServerService {
     return this.httpService.get<ServerLogResponse>(`servers/${id}/log?start=${start}&end=${end}&date=${date}&month=${month}`)
   }
 
+  checkServerExists(ip: string, port: number) {
+    return this.httpService.get<CheckServerExist>(`servers/check_server_exists?ip=${ip}&port=${port}`)
+  }
 }
 
 export interface Server {
@@ -91,6 +94,10 @@ export interface ServerCheckResponse {
 
 export interface ServerValidateResponse {
   validated: boolean;
+}
+
+export interface CheckServerExist {
+  exists: boolean;
 }
 
 export interface ServerLogResponse {

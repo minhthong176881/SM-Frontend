@@ -12,6 +12,7 @@ import { DialogChartComponent } from '../dialog/dialog-chart/dialog-chart.compon
 import { Task } from './custom-table/custom-table.component';
 import { UserDetail } from 'src/app/services/auth.service';
 import { DialogWarnComponent } from '../dialog/dialog-warn/dialog-warn.component';
+import { DialogTerminalComponent } from '../dialog/dialog-terminal/dialog-terminal.component';
 
 @Component({
   selector: 'app-content',
@@ -67,6 +68,39 @@ export class ContentComponent implements OnInit, AfterViewInit {
       this.isLoading = false;
       if (this.itemInPage < this.pageSize) this.hasNexPage = false;
       else this.hasNexPage = true;
+    });
+  }
+
+  detail(id: string) {
+    this.serverService.getServerById(id).subscribe((result: Server) => {
+      this.openDetailDialog(result);
+    });
+  }
+
+  add() {
+    this.openModifyDialog(null, 'add');
+  }
+
+  edit(id: string) {
+    if (this.user.role === 'admin') {
+      this.serverService.getServerById(id).subscribe((result: Server) => {
+        this.openModifyDialog(result, 'edit');
+      });
+    }
+    else this.openWarnDialog('edit');
+  }
+
+  delete(id: string) {
+    if (this.user.role === 'admin') {
+      this.serverService.getServerById(id).subscribe((result: Server) => {
+        this.openDeleteDialog(result);
+      });
+    } else this.openWarnDialog('delete');
+  }
+
+  connect(id: string) {
+    this.serverService.getServerById(id).subscribe((result: Server) => {
+      this.openTerminalDialog(result);
     });
   }
 
@@ -159,31 +193,16 @@ export class ContentComponent implements OnInit, AfterViewInit {
     })
   }
 
-  openWarnDialog(mode: string) {
-    this.dialog.open(DialogWarnComponent, { data: { mode } });
-  }
-
-  detail(id: string) {
-    this.serverService.getServerById(id).subscribe((result: Server) => {
-      this.openDetailDialog(result);
+  openTerminalDialog(data: Server | null) {
+    this.dialog.open(DialogTerminalComponent, {
+      data: {
+        server: data
+      }
     });
   }
 
-  edit(id: string) {
-    if (this.user.role === 'admin') {
-      this.serverService.getServerById(id).subscribe((result: Server) => {
-        this.openModifyDialog(result, 'edit');
-      });
-    }
-    else this.openWarnDialog('edit');
-  }
-
-  delete(id: string) {
-    if (this.user.role === 'admin') {
-      this.serverService.getServerById(id).subscribe((result: Server) => {
-        this.openDeleteDialog(result);
-      });
-    } else this.openWarnDialog('delete');
+  openWarnDialog(mode: string) {
+    this.dialog.open(DialogWarnComponent, { data: { mode } });
   }
 
   viewPassword() {

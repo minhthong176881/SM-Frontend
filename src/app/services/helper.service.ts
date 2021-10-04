@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { CheckServerExist, ServerService } from './server.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class HelperService {
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor() { }
+  constructor(private serverService: ServerService) { }
 
   confirmValidator(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
@@ -25,6 +26,27 @@ export class HelperService {
       }
     };
   }
+
+  validateServerExistsValidator(ipControlName: string, portControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[ipControlName];
+      const portControl = formGroup.controls[portControlName];
+      if (control.value && portControl.value) {
+        this.serverService.checkServerExists(control.value, parseInt(portControl.value)).subscribe(
+          (data: CheckServerExist) => {
+            if (data.exists) {
+              control.setErrors({ serverExists: true });
+              portControl.setErrors({ serverExists: true });
+            } else {
+              control.setErrors(null);
+              portControl.setErrors(null);
+            }
+          })
+      }
+    }
+  }
+
+  
 
   openSnackBar(snackbar: MatSnackBar, message: string, action: string, custom: string) {
     snackbar.open(message, action, {

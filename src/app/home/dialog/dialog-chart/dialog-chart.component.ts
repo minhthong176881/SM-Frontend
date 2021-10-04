@@ -40,23 +40,30 @@ export class DialogChartComponent implements OnInit {
     let data = this.preprocessData(this.log);
 
     chart.data = data;
-    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.title.text = 'Time';
-    categoryAxis.dataFields.category = "time";
+    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    // categoryAxis.title.text = 'Time';
+    // categoryAxis.dataFields.category = "time";
+    dateAxis.renderer.grid.template.location = 0;
+    dateAxis.renderer.axisFills.template.disabled = true;
+    dateAxis.renderer.ticks.template.disabled = true;
     let valueYAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueYAxis.title.text = 'Status';
     valueYAxis.renderer.minWidth = 20;
 
     let series = chart.series.push(new am4charts.LineSeries());
-    series.dataFields.categoryX = "time";
+    series.dataFields.dateX = "date";
     series.dataFields.valueY = "status";
 
     let bullet = series.bullets.push(new am4charts.CircleBullet());
-    bullet.tooltipText = "Time: {date} \n Status: {valueY}";
+    bullet.tooltipText = "Time: {time} \n Status: {realStatus}";
     bullet.circle.strokeWidth = 2;
     bullet.circle.radius = 4;
 
-    // chart.legend = new am4charts.Legend();
+    chart.cursor = new am4charts.XYCursor();
+
+    let scrollbarX = new am4core.Scrollbar();
+    chart.scrollbarX = scrollbarX;
+
     this.chart = chart;
   }
 
@@ -112,12 +119,14 @@ export class DialogChartComponent implements OnInit {
     for (let i = 0; i < data.length; i++) {
       let item = data[i];
       let unixDate = item.time;
-      let date = new Date(unixDate * 1000).toLocaleString("en-US");
+      let date = new Date(unixDate * 1000);
+      let time = new Date(unixDate * 1000).toLocaleString("en-US");
       // let el = date.split("/");
       // let dateString = el[2] + "-" + el[0] + "-" + el[1];
       result.push({
-        time: item.time,
+        time: time,
         status: item.status == 'On' ? 1 : 0,
+        realStatus: item.status,
         date: date
       });
     }

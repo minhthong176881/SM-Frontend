@@ -14,7 +14,7 @@
         <p>
             <span *ngIf="hide">******</span>
             <span *ngIf="!hide">{{currentServer.password}}</span>
-            <button mat-icon-button matSuffix (click)="openAuthenticationDialog(user)" style="margin-top: -10px; max-height: 0px;" [attr.aria-label]="'Hide password'"
+            <button mat-icon-button matSuffix (click)="viewPassword()" style="margin-top: -10px; max-height: 0px;" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>

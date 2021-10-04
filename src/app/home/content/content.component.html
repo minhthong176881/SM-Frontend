@@ -10,7 +10,7 @@
         <mat-icon>refresh</mat-icon>
     </button>
     <div style="margin-left: auto; margin-top: 10px;">
-        <button style="margin-right: 10px" mat-raised-button color="primary" (click)="openModifyDialog(null, 'add')">
+        <button style="margin-right: 10px" mat-raised-button color="primary" (click)="add()">
             Add Server
             <mat-icon style="margin-left: 5px; margin-bottom: 5px;">add_box</mat-icon>
         </button>
@@ -117,7 +117,7 @@
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item>
+                            <button mat-menu-item (click)="connect(row.id)">
                                 <mat-icon>link</mat-icon>
                                 <span>Connect</span>
                             </button>

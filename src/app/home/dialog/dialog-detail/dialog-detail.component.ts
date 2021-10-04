@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Server, ServerService } from 'src/app/services/server.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { HelperService } from 'src/app/services/helper.service';
+import { UserDetail } from 'src/app/services/auth.service';
+import { Server } from 'src/app/services/server.service';
 import { DialogAuthenticationComponent } from '../dialog-authentication/dialog-authentication.component';
+import { DialogWarnComponent } from '../dialog-warn/dialog-warn.component';
 
 @Component({
   selector: 'app-dialog-detail',
@@ -14,20 +14,25 @@ export class DialogDetailComponent implements OnInit {
 
   currentServer: Server;
   hide: boolean;
-  user: string;
+  user: UserDetail;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private serverService: ServerService, 
-    private helperService: HelperService, 
-    public dialog: MatDialog,
-    private _snackBar: MatSnackBar) {
+    public dialog: MatDialog) {
     this.currentServer = data.server;
     this.hide = data.hide;
     this.user = data.user;
   }
 
   ngOnInit(): void {
+  }
+
+  viewPassword() {
+    if (this.user.role === 'admin') {
+      this.openAuthenticationDialog(this.user.username);
+    } else {
+      this.dialog.open(DialogWarnComponent, { data: {"mode": "view"} });
+    }
   }
 
   openAuthenticationDialog(data: string) {

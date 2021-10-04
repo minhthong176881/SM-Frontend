@@ -21,6 +21,9 @@
                     <mat-error *ngIf="f.ip.hasError('pattern')">
                         IP address is not <strong>ipv4</strong> format
                     </mat-error>
+                    <mat-error *ngIf="f.ip.hasError('serverExists')">
+                        Server <strong>existed</strong>
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
@@ -31,6 +34,9 @@
                     </mat-error>
                     <mat-error *ngIf="f.port.hasError('pattern')">
                         Port number must contain <strong>number</strong> only
+                    </mat-error>
+                    <mat-error *ngIf="f.port.hasError('serverExists')">
+                        Server <strong>existed</strong>
                     </mat-error>
                 </mat-form-field>
             </p>
@@ -71,10 +77,10 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button (click)="close()">Cancel</button>
-    <button *ngIf="mode == 'add'" mat-button type="submit" cdkFocusInitial
+    <button *ngIf="mode == 'add'" mat-button type="submit" 
         (click)="addServer()"
         [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid || message != ''">Add</button>
-    <button *ngIf="mode == 'edit'" mat-button type="submit" cdkFocusInitial
+    <button *ngIf="mode == 'edit'" mat-button type="submit" 
         (click)="updateServer()"
         [disabled]="f.ip.value == '' || f.port.value == '' || f.username.value == '' || f.password.value == '' || !form.valid || message != ''">Update</button>
 </mat-dialog-actions>

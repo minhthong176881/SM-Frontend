@@ -18,6 +18,7 @@ import { DialogAuthenticationComponent } from './dialog-authentication/dialog-au
 import { DialogChartComponent } from './dialog-chart/dialog-chart.component';
 import { DateComponent } from './date/date.component';
 import { DialogWarnComponent } from './dialog-warn/dialog-warn.component';
+import { DialogTerminalComponent } from './dialog-terminal/dialog-terminal.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { DialogWarnComponent } from './dialog-warn/dialog-warn.component';
     DialogAuthenticationComponent,
     DialogChartComponent,
     DateComponent,
-    DialogWarnComponent
+    DialogWarnComponent,
+    DialogTerminalComponent
   ],
   imports: [
     CommonModule,
