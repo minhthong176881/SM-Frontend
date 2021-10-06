@@ -55,6 +55,7 @@
     </div>
 
     <div id="chartdiv" style="width: 1450px; height: 400px;"></div>
+    <div *ngIf="!log.length" style="width: 1450px; height: 100px; text-align: center; font-size: 20px;">No data to display.</div>
 </div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions align="end">

@@ -13,6 +13,8 @@ import { Task } from './custom-table/custom-table.component';
 import { UserDetail } from 'src/app/services/auth.service';
 import { DialogWarnComponent } from '../dialog/dialog-warn/dialog-warn.component';
 import { DialogTerminalComponent } from '../dialog/dialog-terminal/dialog-terminal.component';
+import { HelperService } from 'src/app/services/helper.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-content',
@@ -25,6 +27,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   @Input() user!: UserDetail;
   displayedColumns: string[] = ['name', 'ip', 'port', 'username', 'password', 'validate', 'status', 'options'];
   dataSource!: MatTableDataSource<Server>;
+  query: string = '';
   total: number = 0;
   pageSize: number = 5;
   pageIndex: number = 0;
@@ -38,7 +41,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private serverService: ServerService, public dialog: MatDialog) { }
+  constructor(private serverService: ServerService, private helperService: HelperService, private _snackBar: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getServer(0, 5, '');
@@ -118,6 +121,8 @@ export class ContentComponent implements OnInit, AfterViewInit {
     if (this.user.role === 'admin') {
       this.serverService.check(id).subscribe((result: ServerCheckResponse) => {
         console.log(result);
+        this.helperService.openSnackBar(this._snackBar, 'Check server successfully!', "", 'success')
+        this.getServer(this.pageIndex, this.pageSize, this.query);
       });
     } else this.openWarnDialog('check');
   }
@@ -125,7 +130,8 @@ export class ContentComponent implements OnInit, AfterViewInit {
   validate(id: string) {
     if (this.user.role === 'admin') {
       this.serverService.validate(id).subscribe((result: ServerValidateResponse) => {
-        console.log(result);
+        this.helperService.openSnackBar(this._snackBar, 'Validate server successfully!', "", 'success')
+        this.getServer(this.pageIndex, this.pageSize, this.query);
       });
     } else this.openWarnDialog('validate');
   }

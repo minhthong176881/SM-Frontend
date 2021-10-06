@@ -37,7 +37,7 @@ export class DialogModifyComponent implements OnInit {
       password: ['', Validators.required],
       description: [''],
     }, {
-      validator: this.helperService.validateServerExistsValidator('ip', 'port')
+      validator: this.helperService.validateServerExistsValidator('ip', 'port', this.currentServer)
     });
 
     if (this.mode == 'edit') {

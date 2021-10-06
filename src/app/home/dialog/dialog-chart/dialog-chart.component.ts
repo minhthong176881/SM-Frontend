@@ -33,6 +33,11 @@ export class DialogChartComponent implements OnInit {
   }
 
   drawChart() {
+    if (this.log.length == 0) {
+      document.getElementById('chartdiv')!.hidden = true;
+      return;
+    }
+    document.getElementById('chartdiv')!.hidden = false;
     let chart = am4core.create('chartdiv', am4charts.XYChart);
     let title = chart.titles.create();
     title.text = 'Log detail';
@@ -72,8 +77,7 @@ export class DialogChartComponent implements OnInit {
     let start = '';
     let end = '';
     let dateStr = '';
-    let monthStr = ''
-    console.log(start, end, date, month);
+    let monthStr = '';
     switch (this.options) {
       case 'ALL':
         break;
@@ -102,7 +106,6 @@ export class DialogChartComponent implements OnInit {
   getRange(range: any) {
     const start = JSON.stringify(range.value.start)
     const end = JSON.stringify(range.value.end)
-    console.log(start, end);
     return [this.formatDateRange(start), this.formatDateRange(end)]
   }
 
@@ -139,8 +142,10 @@ export class DialogChartComponent implements OnInit {
   }
 
   formatDate(date: string) {
+    console.log(date);
     let el = date.split('/')
     if (parseInt(el[0]) < 10) el[0] = '0' + el[0];
+    if (parseInt(el[1]) < 10) el[1] = '0' + el[1];
     return el[2] + '-' + el[0] + '-' + el[1];
   }
 

@@ -2,11 +2,10 @@
     <mat-form-field style="width: 300px;" appearance="standard">
         <mat-label>Search</mat-label>
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput type="search" (keyup)="applyFilter($event)" placeholder="Search here" class="search-input"
-            #input>
+        <input matInput type="search" [(ngModel)]="query" (keyup)="applyFilter($event)" placeholder="Search here" class="search-input" #input>
     </mat-form-field>
     <button style="height: 75%; margin-top: 10px; margin-left: 15px" matTooltip="Refresh"
-        (click)="refresh(); input.value = ''" mat-raised-button color="primary">
+        (click)="refresh(); query = ''" mat-raised-button color="primary">
         <mat-icon>refresh</mat-icon>
     </button>
     <div style="margin-left: auto; margin-top: 10px;">
@@ -127,7 +126,7 @@
                             </button>
                             <button mat-menu-item (click)="validate(row.id)">
                                 <mat-icon>done_all</mat-icon>
-                                <span>Validate password</span>
+                                <span>Validate server</span>
                             </button>
                             <button mat-menu-item (click)="log(row.id)">
                                 <mat-icon>assessment</mat-icon>
