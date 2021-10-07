@@ -81,7 +81,9 @@ export class ContentComponent implements OnInit, AfterViewInit {
   }
 
   add() {
-    this.openModifyDialog(null, 'add');
+    if (this.user.role === 'admin') {
+      this.openModifyDialog(null, 'add');
+    } else this.openWarnDialog('add');
   }
 
   edit(id: string) {
@@ -120,7 +122,6 @@ export class ContentComponent implements OnInit, AfterViewInit {
   check(id: string) {
     if (this.user.role === 'admin') {
       this.serverService.check(id).subscribe((result: ServerCheckResponse) => {
-        console.log(result);
         this.helperService.openSnackBar(this._snackBar, 'Check server successfully!', "", 'success')
         this.getServer(this.pageIndex, this.pageSize, this.query);
       });

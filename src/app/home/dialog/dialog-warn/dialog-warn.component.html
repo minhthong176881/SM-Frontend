@@ -4,6 +4,7 @@
         <p>
             <mat-icon style="color: #ffbb33;">warning</mat-icon>
             <span [ngSwitch]="data.mode">
+                <span *ngSwitchCase="'add'">You don't have permission to <strong>Add</strong> new server! <br> Please login with an account with the right permissions.</span>
                 <span *ngSwitchCase="'edit'">You don't have permission to <strong>Edit</strong> this server! <br> Please login with an account with the right permissions.</span>
                 <span *ngSwitchCase="'delete'">You don't have permission to <strong>Delete</strong> this server! <br> Please login with an account with the right permissions.</span>
                 <span *ngSwitchCase="'view'"> You don't have permission to <strong>View </strong> the password of this server! <br> Please login with an account with the right permissions.</span>
